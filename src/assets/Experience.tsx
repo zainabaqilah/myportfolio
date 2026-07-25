@@ -88,7 +88,7 @@ const Card3D: React.FC<{ item: ExperienceItem }> = ({ item }) => {
           transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
           transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.5s ease-out',
         }}
-        className="relative w-full h-full bg-zinc-950/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-6 sm:p-7 shadow-2xl overflow-hidden group transform-style-3d cursor-pointer flex flex-col justify-between"
+        className="relative w-full h-full bg-zinc-950/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-6 sm:p-7 shadow-2xl overflow-hidden group transform-style-3d  flex flex-col justify-between"
       >
         {/* Dynamic Spotlight Glow */}
         <div

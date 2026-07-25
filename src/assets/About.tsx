@@ -48,7 +48,7 @@ const certificationsData: Certification[] = [
     year: '2024',
     description:
       'Pelatihan dan sertifikasi kompetensi Junior Programmer BNSP yang membekali kemampuan dalam mengembangkan aplikasi menggunakan pemrograman terstruktur, mengimplementasikan antarmuka pengguna (UI), menyusun fungsi dan file program secara rapi, menulis kode sesuai standar dan best practices, menerapkan perintah eksekusi bahasa pemrograman, serta memanfaatkan library atau komponen yang telah tersedia untuk mendukung pengembangan perangkat lunak.',
-    fileUrl: '/certificates/sertifikat-jwd.jpeg',
+    fileUrl: './certificates/sertifikat-jwd.jpeg',
     isPdf: false,
   },
   {
@@ -58,7 +58,7 @@ const certificationsData: Certification[] = [
     year: '2024',
     description:
       'Mempelajari dasar-dasar pemrosesan data dan penggunaan bahasa pemrograman Python dalam analisis data.',
-    fileUrl: '/certificates/sertifikat-html.jpg',
+    fileUrl: './certificates/sertifikat-html.jpg',
     isPdf: false,
   },
   {
@@ -68,7 +68,7 @@ const certificationsData: Certification[] = [
     year: '2023',
     description:
       'Mempelajari dasar-dasar pemrograman Java, termasuk sintaks dasar, variabel, percabangan, perulangan, metode, dan pemrograman berorientasi objek.',
-    fileUrl: '/certificates/sertifikat-java.pdf',
+    fileUrl: './certificates/sertifikat-java.pdf',
     isPdf: true,
   },
 ];
@@ -300,7 +300,7 @@ export const About: React.FC = () => {
                 className={`flex-1 min-w-[100px] py-2 px-4 rounded-lg text-xs font-semibold transition-all duration-200 ${
                   activeTab === 'skills'
                     ? 'bg-zinc-800 text-white border border-pink-500/30 shadow-sm'
-                    : 'text-zinc-400 hover:text-white'
+                    : 'text-zinc-400 hover:text-white cursor-pointer'
                 }`}
               >
                 Keterampilan
@@ -310,7 +310,7 @@ export const About: React.FC = () => {
                 className={`flex-1 min-w-[100px] py-2 px-4 rounded-lg text-xs font-semibold transition-all duration-200 ${
                   activeTab === 'education'
                     ? 'bg-zinc-800 text-white border border-pink-500/30 shadow-sm'
-                    : 'text-zinc-400 hover:text-white'
+                    : 'text-zinc-400 hover:text-white cursor-pointer'
                 }`}
               >
                 Pendidikan
@@ -320,7 +320,7 @@ export const About: React.FC = () => {
                 className={`flex-1 min-w-[100px] py-2 px-4 rounded-lg text-xs font-semibold transition-all duration-200 ${
                   activeTab === 'certification'
                     ? 'bg-zinc-800 text-white border border-pink-500/30 shadow-sm'
-                    : 'text-zinc-400 hover:text-white'
+                    : 'text-zinc-400 hover:text-white cursor-pointer'
                 }`}
               >
                 Sertifikasi
@@ -410,7 +410,7 @@ export const About: React.FC = () => {
                         
                         <button
                           onClick={() => setSelectedCert(cert)}
-                          className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-pink-500/20 border border-zinc-800 hover:border-pink-500/50 text-xs font-semibold text-pink-400 hover:text-pink-300 transition-all duration-200 flex items-center gap-1.5"
+                          className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-pink-500/20 border border-zinc-800 hover:border-pink-500/50 text-xs font-semibold text-pink-400 hover:text-pink-300 transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -471,7 +471,7 @@ export const About: React.FC = () => {
               {/* Close Button */}
               <button
                 onClick={() => setSelectedCert(null)}
-                className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-pink-500/40 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-pink-500/40 text-zinc-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                 title="Tutup"
               >
                 ✕

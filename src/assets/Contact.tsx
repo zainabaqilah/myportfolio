@@ -3,7 +3,9 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 export const Contact: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false);
   const emailAddress = 'zainabb31864@gmail.com';
-  const whatsappNumber = '6281234567890'; // Ganti dengan nomor WhatsApp aktif kamu
+  const whatsappNumber = '6289633451402'; 
+  const instagramUsername = 'zainabaqilah_';
+  const linkedinUrl = 'https://www.linkedin.com/in/zainab-aqilah-1b668141a';
 
   // Dynamic Mouse Tracking
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -73,14 +75,10 @@ export const Contact: React.FC = () => {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative py-24 md:py-32 pb-12 text-white overflow-hidden font-sans border-t border-zinc-900/80"
+      className="relative py-24 md:py-32 pb-6 text-white overflow-hidden font-sans border-t border-zinc-900/80"
       style={{ backgroundColor: '#020208' }}
     >
-      {/* ================================================================= */}
-      {/* 🌌 LATAR KOSMIK, NEBULA & INTERACTIVE GLOW (SAMA DENGAN HERO)     */}
-      {/* ================================================================= */}
-
-      {/* 1. Base Deep Space Gradient */}
+      {/* 🌌 LATAR KOSMIK, NEBULA & INTERACTIVE GLOW */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -88,7 +86,6 @@ export const Contact: React.FC = () => {
         }}
       />
 
-      {/* 2. Crimson / Pink Glowing Nebula */}
       <div
         className="absolute pointer-events-none rounded-full blur-[120px] opacity-60"
         style={{
@@ -100,7 +97,6 @@ export const Contact: React.FC = () => {
         }}
       />
 
-      {/* 3. Deep Cyan / Teal Nebula Dust */}
       <div
         className="absolute pointer-events-none rounded-full blur-[140px] opacity-60"
         style={{
@@ -112,7 +108,6 @@ export const Contact: React.FC = () => {
         }}
       />
 
-      {/* 4. Interactive Mouse Pointer Glow */}
       <div
         className="pointer-events-none absolute inset-0 transition-[background] duration-300 ease-out z-0"
         style={{
@@ -120,7 +115,6 @@ export const Contact: React.FC = () => {
         }}
       />
 
-      {/* 5. Dynamic Starfield (Cruising Space Effect) */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {starsData.map((star, i) => (
           <div
@@ -144,10 +138,8 @@ export const Contact: React.FC = () => {
         ))}
       </div>
 
-      {/* 6. Cyber Grid Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
 
-      {/* 7. Vignette Darkening Edge */}
       <div
         className="pointer-events-none absolute inset-0 z-0"
         style={{
@@ -155,20 +147,15 @@ export const Contact: React.FC = () => {
         }}
       />
 
-      {/* ================================================================= */}
-
-      <div className="max-w-4xl mx-auto px-6 md:px-8 relative z-10">
+      <div className="max-w-3xl mx-auto px-6 md:px-8 relative z-10">
         
         {/* SECTION HEADER */}
         <div className="flex flex-col items-center text-center gap-4 mb-16">
-          
-          {/* Badge Atas */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
             <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] animate-pulse" />
             <span>Kontak & Diskusi</span>
           </div>
 
-          {/* Judul Utama dengan Neon Glow */}
           <div className="relative group cursor-default">
             <div className="absolute -inset-2 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
@@ -189,15 +176,14 @@ export const Contact: React.FC = () => {
           </p>
         </div>
 
-        {/* MINIMALIST CONTACT LINKS WITH HIGH-RES SVG ICONS */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 mb-28">
+        {/* 2x2 GRID CONTACT LINKS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-0 max-w-2xl mx-auto">
           
-          {/* ITEM 1: EMAIL */}
-          <div className="flex items-center gap-4 group">
-            {/* High-Res Email SVG Icon */}
+          {/* BARIS ATAS 1: EMAIL */}
+          <div className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 hover:border-pink-500/50 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all duration-300 group">
             <a
               href={`mailto:${emailAddress}`}
-              className="w-14 h-14 rounded-2xl bg-zinc-950/80 backdrop-blur-sm border border-zinc-800 group-hover:border-pink-500/50 group-hover:shadow-[0_0_20px_rgba(236,72,153,0.25)] flex items-center justify-center text-pink-400 transition-all duration-300"
+              className="w-12 h-12 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-pink-400 shrink-0 group-hover:border-pink-500/40 transition-colors"
               title="Kirim Email"
             >
               <svg
@@ -206,7 +192,7 @@ export const Contact: React.FC = () => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-6 h-6 group-hover:scale-110 transition-transform duration-300"
+                className="w-5 h-5 group-hover:scale-110 transition-transform duration-300"
               >
                 <path
                   strokeLinecap="round"
@@ -216,77 +202,152 @@ export const Contact: React.FC = () => {
               </svg>
             </a>
 
-            <div className="flex flex-col">
-              <span className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest">
+            <div className="flex flex-col min-w-0">
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
                 Email
               </span>
               <a
                 href={`mailto:${emailAddress}`}
-                className="text-sm font-semibold text-zinc-200 hover:text-pink-400 transition-colors"
+                className="text-xs font-semibold text-zinc-200 hover:text-pink-400 transition-colors truncate"
+                title={emailAddress}
               >
                 {emailAddress}
               </a>
               <button
                 onClick={handleCopyEmail}
-                className="text-[11px] font-mono text-left text-pink-400/80 hover:text-pink-400 mt-0.5 transition-colors"
+                className="text-[10px] font-mono text-left text-pink-400/80 hover:text-pink-400 mt-0.5 transition-colors"
               >
-                {copied ? '✓ Email tersalin!' : 'Klik untuk salin alamat'}
+                {copied ? '✓ Tersalin!' : 'Klik untuk salin'}
               </button>
             </div>
           </div>
 
-          {/* SEPARATOR (DESKTOP ONLY) */}
-          <div className="hidden sm:block w-[1px] h-12 bg-zinc-800/80" />
-
-          {/* ITEM 2: WHATSAPP */}
-          <div className="flex items-center gap-4 group">
-            {/* High-Res WhatsApp Official SVG Icon */}
+          {/* BARIS ATAS 2: WHATSAPP */}
+          <div className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 hover:border-pink-500/50 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all duration-300 group">
             <a
               href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-14 h-14 rounded-2xl bg-zinc-950/80 backdrop-blur-sm border border-zinc-800 group-hover:border-pink-500/50 group-hover:shadow-[0_0_20px_rgba(236,72,153,0.25)] flex items-center justify-center text-pink-400 transition-all duration-300"
+              className="w-12 h-12 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-pink-400 shrink-0 group-hover:border-pink-500/40 transition-colors"
               title="Chat WhatsApp"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
+                width="20"
+                height="20"
                 fill="currentColor"
                 viewBox="0 0 24 24"
-                className="w-6 h-6 group-hover:scale-110 transition-transform duration-300"
+                className="w-5 h-5 group-hover:scale-110 transition-transform duration-300"
               >
                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.285-.143-1.688-.833-1.949-.928-.261-.095-.451-.143-.641.143-.19.285-.736.928-.903 1.118-.166.19-.332.214-.618.071-.285-.143-1.206-.444-2.298-1.417-.85-.758-1.424-1.693-1.591-1.978-.166-.285-.018-.439.125-.581.129-.128.285-.333.428-.499.143-.167.19-.285.285-.476.095-.19.048-.357-.024-.5-.071-.143-.641-1.545-.879-2.116-.231-.557-.466-.482-.641-.491l-.547-.01c-.19 0-.499.071-.76.357-.261.285-.998.975-.998 2.38 0 1.404 1.022 2.76 1.165 2.951.143.19 2.012 3.072 4.875 4.308.681.294 1.213.469 1.627.601.684.218 1.307.187 1.799.114.548-.082 1.688-.69 1.926-1.356.237-.666.237-1.237.166-1.356-.07-.119-.26-.19-.546-.333z" />
               </svg>
             </a>
 
-            <div className="flex flex-col">
-              <span className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest">
+            <div className="flex flex-col min-w-0">
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
                 WhatsApp
               </span>
               <a
                 href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-semibold text-zinc-200 hover:text-pink-400 transition-colors flex items-center gap-1.5"
+                className="text-xs font-semibold text-zinc-200 hover:text-pink-400 transition-colors flex items-center gap-1"
               >
                 <span>Chat Langsung</span>
                 <span>↗</span>
               </a>
-              <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5 mt-0.5">
+              <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1 mt-0.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Respon Cepat
               </span>
             </div>
           </div>
+
+          {/* BARIS BAWAH 1: INSTAGRAM */}
+          <div className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 hover:border-pink-500/50 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all duration-300 group">
+            <a
+              href={`https://instagram.com/${instagramUsername}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-pink-400 shrink-0 group-hover:border-pink-500/40 transition-colors"
+              title="Profil Instagram"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                className="w-5 h-5 group-hover:scale-110 transition-transform duration-300"
+              >
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+              </svg>
+            </a>
+
+            <div className="flex flex-col min-w-0">
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                Instagram
+              </span>
+              <a
+                href={`https://instagram.com/${instagramUsername}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-semibold text-zinc-200 hover:text-pink-400 transition-colors flex items-center gap-1 truncate"
+              >
+                <span>@{instagramUsername}</span>
+                <span>↗</span>
+              </a>
+              <span className="text-[10px] font-mono text-pink-400/80 mt-0.5">
+                Aktivitas
+              </span>
+            </div>
+          </div>
+
+          {/* BARIS BAWAH 2: LINKEDIN */}
+          <div className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 hover:border-pink-500/50 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all duration-300 group">
+            <a
+              href={linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-pink-400 shrink-0 group-hover:border-pink-500/40 transition-colors"
+              title="Profil LinkedIn"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                className="w-5 h-5 group-hover:scale-110 transition-transform duration-300"
+              >
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+              </svg>
+            </a>
+
+            <div className="flex flex-col min-w-0">
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                LinkedIn
+              </span>
+              <a
+                href={linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-semibold text-zinc-200 hover:text-pink-400 transition-colors flex items-center gap-1 truncate"
+              >
+                <span>Zainab Aqilah</span>
+                <span>↗</span>
+              </a>
+              <span className="text-[10px] font-mono text-pink-400/80 mt-0.5">
+                Koneksi Profesional
+              </span>
+            </div>
+          </div>
+
         </div>
       </div>
 
       {/* Keyframe Animations */}
       <style>{`
-        /* ----------------------------------------------------------- */
-        /* ANIMASI BINTANG MAJU TENANG (CRUISING FORWARD)              */
-        /* ----------------------------------------------------------- */
         @keyframes cruiseForward {
           0% {
             opacity: 0;

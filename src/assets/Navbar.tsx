@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface NavLink {
   name: string;
@@ -10,6 +10,7 @@ const navLinks: NavLink[] = [
   { name: 'About', href: '#about' },
   { name: 'Experience', href: '#experience' },
   { name: 'Projects', href: '#projects' },
+  { name: 'Contact', href: '#contact' },
 ];
 
 export const Navbar: React.FC = () => {
@@ -18,18 +19,34 @@ export const Navbar: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>('Home');
   const [scrollProgress, setScrollProgress] = useState<number>(0);
 
+  // 1. Ref untuk mengunci handleScroll saat user mengeklik menu secara manual
+  const isManualScroll = useRef<boolean>(false);
+  const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 20);
 
+      // Hitung progress bar
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (totalHeight > 0) {
         const progress = (currentScrollY / totalHeight) * 100;
         setScrollProgress(Math.min(Math.max(progress, 0), 100));
       }
 
-      const scrollPosition = currentScrollY + 150;
+      // 2. JIKA SEDANG MANUAL SCROLL (KLIK MENU), BAIAPAKAN DETEKSI SCROLL OTOMATIS
+      if (isManualScroll.current) return;
+
+      // Cek apakah scroll sudah berada di paling bawah halaman (Deteksi Contact)
+      const isAtBottom = window.innerHeight + currentScrollY >= document.documentElement.scrollHeight - 60;
+      if (isAtBottom) {
+        setActiveSection('Contact');
+        return;
+      }
+
+      // Hitung posisi section
+      const scrollPosition = currentScrollY + 180;
       for (const link of navLinks) {
         const sectionId = link.href.substring(1);
         const element = document.getElementById(sectionId);
@@ -49,6 +66,31 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 3. Helper klik navigasi yang langsung mengunci activeSection tanpa interupsi
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, name: string, href: string) => {
+    e.preventDefault();
+    
+    // Kunci langsung activeSection saat diklik
+    setActiveSection(name);
+    setIsOpen(false);
+    isManualScroll.current = true;
+
+    // Bersihkan timeout sebelumnya jika ada
+    if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+
+    // Scroll mulus ke elemen target
+    const targetId = href.substring(1);
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Lepas kunci manual scroll setelah animasi smooth scroll selesai (~800ms)
+    scrollTimeout.current = setTimeout(() => {
+      isManualScroll.current = false;
+    }, 800);
+  };
+
   return (
     <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300 pt-4 px-4 md:px-8">
       {/* MAIN CONTAINER NAVBAR */}
@@ -64,7 +106,8 @@ export const Navbar: React.FC = () => {
           {/* 1. BRAND LOGO */}
           <a
             href="#home"
-            className="flex items-center gap-2 text-base font-bold tracking-wide text-white group"
+            onClick={(e) => handleNavClick(e, 'Home', '#home')}
+            className="flex items-center gap-2 text-base font-bold tracking-wide text-white group cursor-pointer"
           >
             <span className="font-mono uppercase tracking-widest text-sm text-zinc-100 group-hover:text-pink-400 transition-colors">
               Portfolio
@@ -72,40 +115,48 @@ export const Navbar: React.FC = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
           </a>
 
-          {/* 2. DESKTOP NAVIGATION MENU (Centered & Square Hover Box) */}
+          {/* 2. DESKTOP NAVIGATION MENU */}
           <nav className="hidden md:flex items-center gap-1 bg-zinc-900/60 p-1.5 rounded-xl border border-zinc-800">
             <ul className="flex items-center gap-1">
-              {navLinks.map((link) => {
-                const isActive = activeSection === link.name;
-                return (
-                  <li key={link.name}>
-                    <a
-                      href={link.href}
-                      onClick={() => setActiveSection(link.name)}
-                      className={`relative px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-2 border ${
-                        isActive
-                          ? 'text-white bg-zinc-800 border-pink-500/40 shadow-sm'
-                          : 'text-zinc-400 border-transparent hover:text-white hover:bg-zinc-800/60 hover:border-zinc-700/80'
-                      }`}
-                    >
-                      <span>{link.name}</span>
-                      {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
-                      )}
-                    </a>
-                  </li>
-                );
-              })}
+              {navLinks
+                .filter((link) => link.name !== 'Contact')
+                .map((link) => {
+                  const isActive = activeSection === link.name;
+                  return (
+                    <li key={link.name}>
+                      <a
+                        href={link.href}
+                        onClick={(e) => handleNavClick(e, link.name, link.href)}
+                        className={`relative px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-2 border cursor-pointer ${
+                          isActive
+                            ? 'text-white bg-zinc-800 border-pink-500/40 shadow-sm'
+                            : 'text-zinc-400 border-transparent hover:text-white hover:bg-zinc-800/60 hover:border-zinc-700/80'
+                        }`}
+                      >
+                        <span>{link.name}</span>
+                        {isActive && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
+                        )}
+                      </a>
+                    </li>
+                  );
+                })}
             </ul>
           </nav>
 
-          {/* 3. CTA BUTTON DESKTOP */}
+          {/* 3. CTA BUTTON DESKTOP (CONTACT) */}
           <div className="hidden md:block">
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/20 hover:shadow-pink-500/40 hover:opacity-95 transition-all duration-200"
+              onClick={(e) => handleNavClick(e, 'Contact', '#contact')}
+              className={`inline-flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/20 hover:shadow-pink-500/40 hover:opacity-95 transition-all duration-200 cursor-pointer ${
+                activeSection === 'Contact' ? 'ring-2 ring-pink-400 ring-offset-2 ring-offset-black' : ''
+              }`}
             >
               <span>Contact</span>
+              {activeSection === 'Contact' && (
+                <span className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_#ffffff]" />
+              )}
             </a>
           </div>
 
@@ -113,7 +164,7 @@ export const Navbar: React.FC = () => {
           <button
             onClick={() => setIsOpen((prev) => !prev)}
             aria-label="Toggle Menu"
-            className="md:hidden p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white focus:outline-none transition-colors"
+            className="md:hidden p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white focus:outline-none transition-colors cursor-pointer"
           >
             <div className="w-5 h-4 flex flex-col justify-between">
               <span
@@ -142,36 +193,35 @@ export const Navbar: React.FC = () => {
           }`}
         >
           <ul className="flex flex-col gap-2 pb-1">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.name;
-              return (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    onClick={() => {
-                      setActiveSection(link.name);
-                      setIsOpen(false);
-                    }}
-                    className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all duration-200 ${
-                      isActive
-                        ? 'text-white bg-zinc-800 border-pink-500/40'
-                        : 'text-zinc-400 border-transparent hover:text-white hover:bg-zinc-800/40 hover:border-zinc-800'
-                    }`}
-                  >
-                    <span>{link.name}</span>
-                    {isActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
-                    )}
-                  </a>
-                </li>
-              );
-            })}
+            {navLinks
+              .filter((link) => link.name !== 'Contact')
+              .map((link) => {
+                const isActive = activeSection === link.name;
+                return (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      onClick={(e) => handleNavClick(e, link.name, link.href)}
+                      className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all duration-200 cursor-pointer ${
+                        isActive
+                          ? 'text-white bg-zinc-800 border-pink-500/40'
+                          : 'text-zinc-400 border-transparent hover:text-white hover:bg-zinc-800/40 hover:border-zinc-800'
+                      }`}
+                    >
+                      <span>{link.name}</span>
+                      {isActive && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
 
             <li className="pt-2">
               <a
                 href="#contact"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold text-xs shadow-md shadow-pink-500/20"
+                onClick={(e) => handleNavClick(e, 'Contact', '#contact')}
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold text-xs shadow-md shadow-pink-500/20 cursor-pointer"
               >
                 <span>Contact</span>
               </a>
