@@ -115,7 +115,7 @@ export const Projects: React.FC = () => {
   // Generate Data Bintang Maju (Cruising Space)
   const starsData = useMemo(() => {
     const COUNT = 80;
-    return [...Array(COUNT)].map((_, i) => {
+    return [...Array(COUNT)].map(() => {
       const startX = Math.random() * 100;
       const startY = Math.random() * 100;
 

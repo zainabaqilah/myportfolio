@@ -27,7 +27,7 @@ export const Hero: React.FC = () => {
   // ================================================================= */
   const starsData = useMemo(() => {
     const COUNT = 80; // Jumlah bintang
-    return [...Array(COUNT)].map((_, i) => {
+    return [...Array(COUNT)].map(() => {
       // Posisi Awal Acak (0% - 100%)
       const startX = Math.random() * 100;
       const startY = Math.random() * 100;

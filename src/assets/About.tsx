@@ -101,7 +101,7 @@ export const About: React.FC = () => {
   // Generate Data Bintang dengan Arah Maju (Cruising Space)
   const starsData = useMemo(() => {
     const COUNT = 85;
-    return [...Array(COUNT)].map((_, i) => {
+    return [...Array(COUNT)].map(() => {
       const startX = Math.random() * 100;
       const startY = Math.random() * 100;
 
