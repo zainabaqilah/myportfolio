@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 
 // Types Definition
 type TabType = 'skills' | 'education' | 'certification';
@@ -6,7 +7,7 @@ type TabType = 'skills' | 'education' | 'certification';
 interface Skill {
   name: string;
   category: 'Frontend' | 'Backend / Tools' | 'Data Science';
-  level: number; // Percentage
+  level: number;
   icon: string;
 }
 
@@ -35,11 +36,9 @@ const skillsData: Skill[] = [
   { name: 'React.js', category: 'Frontend', level: 80, icon: '⚛️' },
   { name: 'Tailwind CSS', category: 'Frontend', level: 92, icon: '🎨' },
   { name: 'GitHub', category: 'Backend / Tools', level: 70, icon: '📦' },
-  // { name: 'Laravel', category: 'Backend / Tools', level: 75, icon: '⚡' },
   { name: 'Team work & Communication', category: 'Backend / Tools', level: 95, icon: '🤝' },
 ];
 
-// DATA SERTIFIKASI
 const certificationsData: Certification[] = [
   {
     id: 'cert-1',
@@ -83,6 +82,35 @@ export const About: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const sectionRef = useRef<HTMLElement>(null);
 
+  // 🔒 Lock Scroll Total (Lock HTML & Body + Mencegah Bounce Scroll HP)
+  useEffect(() => {
+    if (selectedCert) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [selectedCert]);
+
+  // 🧹 Auto Close jika Pindah Tab / Navigasi
+  useEffect(() => {
+    setSelectedCert(null);
+  }, [activeTab]);
+
+  useEffect(() => {
+    const handleMouseChange = () => {
+      if (selectedCert) setSelectedCert(null);
+    };
+    window.addEventListener('popstate', handleMouseChange);
+    return () => window.removeEventListener('popstate', handleMouseChange);
+  }, [selectedCert]);
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const rect = sectionRef.current?.getBoundingClientRect();
@@ -98,7 +126,6 @@ export const About: React.FC = () => {
     };
   }, []);
 
-  // Generate Data Bintang dengan Arah Maju (Cruising Space)
   const starsData = useMemo(() => {
     const COUNT = 85;
     return [...Array(COUNT)].map(() => {
@@ -135,7 +162,6 @@ export const About: React.FC = () => {
     });
   }, []);
 
-  // Helper untuk mengecek apakah file berupa PDF
   const checkIsPdf = (cert: Certification) => {
     if (cert.isPdf !== undefined) return cert.isPdf;
     return cert.fileUrl.toLowerCase().endsWith('.pdf');
@@ -148,11 +174,7 @@ export const About: React.FC = () => {
       className="relative py-24 md:py-32 text-white overflow-hidden font-sans border-t border-zinc-900/80"
       style={{ backgroundColor: '#020208' }}
     >
-      {/* ================================================================= */}
-      {/* 🌌 LATAR KOSMIK, NEBULA & INTERACTIVE GLOW (SAMA DENGAN HERO)     */}
-      {/* ================================================================= */}
-
-      {/* 1. Base Deep Space Gradient */}
+      {/* BACKGROUND EFFECTS */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -160,7 +182,6 @@ export const About: React.FC = () => {
         }}
       />
 
-      {/* 2. Crimson / Pink Glowing Nebula */}
       <div
         className="absolute pointer-events-none rounded-full blur-[120px] opacity-60"
         style={{
@@ -172,7 +193,6 @@ export const About: React.FC = () => {
         }}
       />
 
-      {/* 3. Deep Cyan / Teal Nebula Dust */}
       <div
         className="absolute pointer-events-none rounded-full blur-[140px] opacity-60"
         style={{
@@ -184,7 +204,6 @@ export const About: React.FC = () => {
         }}
       />
 
-      {/* 4. Interactive Mouse Pointer Glow */}
       <div
         className="pointer-events-none absolute inset-0 transition-[background] duration-300 ease-out z-0"
         style={{
@@ -192,7 +211,6 @@ export const About: React.FC = () => {
         }}
       />
 
-      {/* 5. Dynamic Starfield (Cruising Space Effect) */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {starsData.map((star, i) => (
           <div
@@ -203,12 +221,10 @@ export const About: React.FC = () => {
               height: `${star.size}px`,
               backgroundColor: star.color,
               boxShadow: star.hasGlow ? `0 0 10px 1px ${star.color}` : 'none',
-
               '--start-x': `${star.startX}vw`,
               '--start-y': `${star.startY}vh`,
               '--end-x': `${star.endX}vw`,
               '--end-y': `${star.endY}vh`,
-
               animation: `cruiseForward ${star.duration}s linear infinite, starTwinkle 4s ease-in-out infinite alternate`,
               animationDelay: `${star.delay}s`,
             } as React.CSSProperties}
@@ -216,10 +232,8 @@ export const About: React.FC = () => {
         ))}
       </div>
 
-      {/* 6. Cyber Grid Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
 
-      {/* 7. Vignette Darkening Edge */}
       <div
         className="pointer-events-none absolute inset-0 z-0"
         style={{
@@ -227,11 +241,8 @@ export const About: React.FC = () => {
         }}
       />
 
-      {/* ================================================================= */}
-
       <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
-        
-        {/* SECTION HEADER */}
+        {/* HEADER */}
         <div className="flex flex-col items-center text-center gap-4 mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
             <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] animate-pulse" />
@@ -254,10 +265,9 @@ export const About: React.FC = () => {
           </div>
         </div>
 
-        {/* BENTO GRID LAYOUT */}
+        {/* BENTO GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* LEFT COLUMN: Profile Card */}
+          {/* PROFILE CARD */}
           <div className="lg:col-span-5 flex flex-col gap-6">
             <div className="bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 rounded-2xl p-6 sm:p-8 relative overflow-hidden group shadow-2xl">
               <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl group-hover:bg-pink-500/20 transition-all duration-500 pointer-events-none" />
@@ -290,10 +300,8 @@ export const About: React.FC = () => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Interactive Tabs Content */}
+          {/* TABS CONTENT */}
           <div className="lg:col-span-7 bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 rounded-2xl p-6 sm:p-8 shadow-2xl relative">
-            
-            {/* TAB NAVIGATION SWITCHER */}
             <div className="flex items-center gap-2 p-1.5 bg-zinc-900/90 rounded-xl border border-zinc-800/80 mb-8 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('skills')}
@@ -327,7 +335,6 @@ export const About: React.FC = () => {
               </button>
             </div>
 
-            {/* TAB CONTENT 1: KETERAMPILAN */}
             {activeTab === 'skills' && (
               <div className="space-y-5 animate-fadeIn">
                 <h4 className="text-base font-bold text-white flex items-center gap-2 mb-2">
@@ -355,7 +362,6 @@ export const About: React.FC = () => {
               </div>
             )}
 
-            {/* TAB CONTENT 2: PENDIDIKAN */}
             {activeTab === 'education' && (
               <div className="space-y-6 animate-fadeIn">
                 <h4 className="text-base font-bold text-white flex items-center gap-2">
@@ -374,7 +380,6 @@ export const About: React.FC = () => {
               </div>
             )}
 
-            {/* TAB CONTENT 3: SERTIFIKASI */}
             {activeTab === 'certification' && (
               <div className="space-y-4 animate-fadeIn">
                 <h4 className="text-base font-bold text-white flex items-center gap-2 mb-4">
@@ -401,7 +406,6 @@ export const About: React.FC = () => {
                         </p>
                       </div>
 
-                      {/* TOMBOL PETA/LIHAT SERTIFIKAT */}
                       <div className="pt-3 border-t border-zinc-800/60 flex items-center justify-between">
                         <span className="text-[10px] font-mono text-zinc-500 flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-pink-500" />
@@ -434,124 +438,120 @@ export const About: React.FC = () => {
                           <span>Lihat Sertifikat</span>
                         </button>
                       </div>
-
                     </div>
                   ))}
                 </div>
               </div>
             )}
-
           </div>
-
         </div>
-
       </div>
 
-      {/* MODAL LIGHTBOX / PREVIEW SERTIFIKAT */}
-      {selectedCert && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
-          onClick={() => setSelectedCert(null)}
-        >
+      {/* 🚀 MODAL DILINDUNGI PORTAL & DENGAN TOUCH SCROLL LOCK */}
+      {selectedCert &&
+        createPortal(
           <div
-            className="relative w-full max-w-4xl bg-zinc-950 border border-zinc-800 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(236,72,153,0.15)] flex flex-col h-[85vh]"
-            onClick={(e) => e.stopPropagation()}
+            /* class touch-none & overscroll-contain mengunci swipe touch gesture di background */
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn touch-none overscroll-contain"
+            onClick={() => setSelectedCert(null)}
           >
-            {/* Modal Header */}
-            <div className="p-4 sm:p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/50 shrink-0">
-              <div>
-                <h3 className="text-sm sm:text-base font-bold text-white">
-                  {selectedCert.title}
-                </h3>
-                <p className="text-xs text-pink-400 font-medium mt-0.5">
-                  {selectedCert.issuer} — ({selectedCert.year})
-                </p>
-              </div>
+            <div
+              /* class touch-auto mengizinkan internal scroll jika isi modal tinggi */
+              className="relative w-full max-w-4xl max-h-[90vh] bg-zinc-950 border border-zinc-800 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(236,72,153,0.2)] flex flex-col my-auto touch-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Modal Header */}
+              <div className="p-4 sm:p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/90 shrink-0">
+                <div>
+                  <h3 className="text-sm sm:text-base font-bold text-white">
+                    {selectedCert.title}
+                  </h3>
+                  <p className="text-xs text-pink-400 font-medium mt-0.5">
+                    {selectedCert.issuer} — ({selectedCert.year})
+                  </p>
+                </div>
 
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedCert(null)}
-                className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-pink-500/40 text-zinc-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-                title="Tutup"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Modal Body / Document Preview */}
-            <div className="p-2 sm:p-4 overflow-y-auto flex items-center justify-center bg-zinc-900/30 flex-1 relative">
-              {checkIsPdf(selectedCert) ? (
-                /* PREVIEW FILE PDF DENGAN OBJECT FALLBACK */
-                <object
-                  data={selectedCert.fileUrl}
-                  type="application/pdf"
-                  className="w-full h-full min-h-[400px] rounded-lg border border-zinc-800 bg-zinc-900"
+                <button
+                  onClick={() => setSelectedCert(null)}
+                  className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-pink-500/40 text-zinc-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                  title="Tutup"
                 >
-                  <div className="flex flex-col items-center justify-center h-full p-6 text-center">
-                    <p className="text-xs text-zinc-300 mb-4">
-                      Browser kamu tidak mendukung pratinjau langsung PDF secara tertanam.
-                    </p>
-                    <a
-                      href={selectedCert.fileUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2 rounded-xl bg-pink-500/20 border border-pink-500/40 text-pink-400 text-xs font-semibold hover:bg-pink-500/30 transition-all"
-                    >
-                      Buka PDF di Tab Baru ↗
-                    </a>
-                  </div>
-                </object>
-              ) : (
-                /* PREVIEW FILE GAMBAR */
-                <img
-                  src={selectedCert.fileUrl}
-                  alt={selectedCert.title}
-                  className="max-h-full w-auto object-contain rounded-lg border border-zinc-800 shadow-md"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                    const fallbackElem = document.getElementById('cert-fallback');
-                    if (fallbackElem) fallbackElem.style.display = 'flex';
-                  }}
-                />
-              )}
-
-              {/* Fallback Display jika Gambar Rusak / Tidak Ditemukan */}
-              <div
-                id="cert-fallback"
-                className="hidden flex-col items-center justify-center text-center p-8 border border-dashed border-zinc-800 rounded-xl bg-zinc-950/90 max-w-md absolute inset-auto z-10"
-              >
-                <span className="text-3xl mb-2">📂</span>
-                <p className="text-xs font-semibold text-zinc-300">
-                  Berkas Sertifikat Tidak Ditemukan
-                </p>
-                <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed">
-                  Pastikan nama file di folder <code className="text-pink-400 font-mono">public/certificates/</code> adalah <code className="text-pink-400 font-mono">{selectedCert.fileUrl.replace('/certificates/', '')}</code>.
-                </p>
+                  ✕
+                </button>
               </div>
-            </div>
 
-            {/* Modal Footer */}
-            <div className="p-4 border-t border-zinc-800 flex items-center justify-between bg-zinc-900/50 text-xs shrink-0">
-              <p className="text-zinc-500 hidden sm:block">
-                Zainab Aqilah — Sertifikat
-              </p>
-              
-              <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-                <a
-                  href={selectedCert.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold shadow-md shadow-pink-500/20 hover:opacity-95 transition-all text-center flex items-center gap-1.5"
+              {/* Modal Body */}
+              <div className="p-2 sm:p-4 overflow-y-auto flex items-center justify-center bg-zinc-900/30 flex-1 min-h-[300px] relative">
+                {checkIsPdf(selectedCert) ? (
+                  <object
+                    data={selectedCert.fileUrl}
+                    type="application/pdf"
+                    className="w-full h-[60vh] min-h-[350px] rounded-lg border border-zinc-800 bg-zinc-900"
+                  >
+                    <div className="flex flex-col items-center justify-center h-full p-6 text-center">
+                      <p className="text-xs text-zinc-300 mb-4">
+                        Browser kamu tidak mendukung pratinjau langsung PDF secara tertanam.
+                      </p>
+                      <a
+                        href={selectedCert.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 rounded-xl bg-pink-500/20 border border-pink-500/40 text-pink-400 text-xs font-semibold hover:bg-pink-500/30 transition-all"
+                      >
+                        Buka PDF di Tab Baru ↗
+                      </a>
+                    </div>
+                  </object>
+                ) : (
+                  <img
+                    src={selectedCert.fileUrl}
+                    alt={selectedCert.title}
+                    className="max-h-[65vh] w-auto object-contain rounded-lg border border-zinc-800 shadow-md"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                      const fallbackElem = document.getElementById('cert-fallback');
+                      if (fallbackElem) fallbackElem.style.display = 'flex';
+                    }}
+                  />
+                )}
+
+                <div
+                  id="cert-fallback"
+                  className="hidden flex-col items-center justify-center text-center p-8 border border-dashed border-zinc-800 rounded-xl bg-zinc-950/90 max-w-md absolute inset-auto z-10"
                 >
-                  <span>Buka Ukuran Penuh / Unduh</span>
-                  <span>↗</span>
-                </a>
+                  <span className="text-3xl mb-2">📂</span>
+                  <p className="text-xs font-semibold text-zinc-300">
+                    Berkas Sertifikat Tidak Ditemukan
+                  </p>
+                  <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed">
+                    Pastikan nama file di folder <code className="text-pink-400 font-mono">public/certificates/</code> adalah <code className="text-pink-400 font-mono">{selectedCert.fileUrl.replace('./certificates/', '')}</code>.
+                  </p>
+                </div>
               </div>
-            </div>
 
-          </div>
-        </div>
-      )}
+              {/* Modal Footer */}
+              <div className="p-4 border-t border-zinc-800 flex items-center justify-between bg-zinc-900/90 text-xs shrink-0">
+                <p className="text-zinc-500 hidden sm:block">
+                  Zainab Aqilah — Sertifikat
+                </p>
+                
+                <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                  <a
+                    href={selectedCert.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold shadow-md shadow-pink-500/20 hover:opacity-95 transition-all text-center flex items-center gap-1.5"
+                  >
+                    <span>Buka Ukuran Penuh / Unduh</span>
+                    <span>↗</span>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>,
+          document.body
+        )}
 
       {/* Keyframe Animations */}
       <style>{`

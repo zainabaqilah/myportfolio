@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom'; // 👈 Import createPortal
 
 interface Project {
   id: number;
@@ -96,6 +97,27 @@ export const Projects: React.FC = () => {
   // Dynamic Mouse Tracking
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const sectionRef = useRef<HTMLElement>(null);
+
+  // 🔒 Lock Scroll Total (Lock HTML & Body + Mencegah Touch Scroll Background)
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [selectedProject]);
+
+  // 🧹 Auto Close jika Pindah Filter
+  useEffect(() => {
+    setSelectedProject(null);
+  }, [filter]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -329,7 +351,7 @@ export const Projects: React.FC = () => {
                   ))}
                 </div>
 
-                {/* TOMBOL "LIHAT DETAIL PROYEK" DENGAN CURSOR-POINTER DILENGKAPI KURSOR TANGAN */}
+                {/* TOMBOL "LIHAT DETAIL PROYEK" */}
                 <button
                   onClick={() => setSelectedProject(project)}
                   type="button"
@@ -347,129 +369,131 @@ export const Projects: React.FC = () => {
 
       </div>
 
-      {/* MODAL DETAIL PROYEK */}
-      {selectedProject && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn cursor-pointer"
-          onClick={() => setSelectedProject(null)}
-        >
+      {/* 🚀 MODAL DETAIL PROYEK DENGAN REACT PORTAL & TOUCH SCROLL LOCK */}
+      {selectedProject &&
+        createPortal(
           <div
-            className="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative shadow-[0_0_50px_rgba(236,72,153,0.15)] overflow-hidden max-h-[90vh] overflow-y-auto modal-content cursor-default"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn touch-none overscroll-contain cursor-pointer"
+            onClick={() => setSelectedProject(null)}
           >
-            {/* Background Accent */}
-            <div className="absolute top-0 right-0 w-48 h-48 bg-pink-500/10 rounded-full blur-3xl pointer-events-none" />
-
-            {/* TOMBOL CLOSE SILANG (X) TOUCH-FRIENDLY & CURSOR-POINTER */}
-            <button
-              onClick={() => setSelectedProject(null)}
-              type="button"
-              className="absolute top-4 right-4 z-30 w-8 h-8 rounded-xl bg-zinc-900/90 border border-zinc-800 text-zinc-400 hover:text-white hover:border-pink-500/50 hover:bg-pink-500/10 active:scale-95 flex items-center justify-center transition-all duration-200 shadow-lg cursor-pointer group/closeBtn"
-              title="Tutup Modal"
-              aria-label="Tutup Detail Proyek"
+            <div
+              className="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative shadow-[0_0_50px_rgba(236,72,153,0.2)] overflow-hidden max-h-[90vh] overflow-y-auto modal-content cursor-default touch-auto my-auto"
+              onClick={(e) => e.stopPropagation()}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-5 h-5 group-hover/closeBtn:scale-110 group-hover/closeBtn:text-pink-400 transition-transform duration-200"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+              {/* Background Accent */}
+              <div className="absolute top-0 right-0 w-48 h-48 bg-pink-500/10 rounded-full blur-3xl pointer-events-none" />
 
-            {/* Header Modal */}
-            <div className="mb-6 pr-12 relative z-10">
-              <span className="text-xs font-mono text-pink-400 font-semibold uppercase tracking-wider">
-                {selectedProject.category} — {selectedProject.period}
-              </span>
-              <h3 className="text-2xl font-bold text-white mt-1">
-                {selectedProject.title}
-              </h3>
-              <p className="text-xs font-medium text-zinc-400 mt-1">
-                {selectedProject.subtitle}
-              </p>
-            </div>
-
-            {/* Deskripsi Lengkap */}
-            <div className="mb-6 space-y-3 text-xs sm:text-sm text-zinc-300 leading-relaxed relative z-10">
-              <p>{selectedProject.description}</p>
-            </div>
-
-            {/* Poin-Poin Utama / Highlights */}
-            <div className="mb-6 relative z-10">
-              <h4 className="text-xs font-mono uppercase text-zinc-400 tracking-wider mb-3">
-                Sorotan Utama & Fitur:
-              </h4>
-              <ul className="space-y-2">
-                {selectedProject.highlights.map((item, idx) => (
-                  <li
-                    key={idx}
-                    className="flex items-start gap-2 text-xs text-zinc-300"
-                  >
-                    <span className="text-pink-400 mt-0.5">✦</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Tech Stack List */}
-            <div className="mb-8 relative z-10">
-              <h4 className="text-xs font-mono uppercase text-zinc-400 tracking-wider mb-3">
-                Teknologi yang Digunakan:
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {selectedProject.technologies.map((tech, idx) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-medium text-pink-300"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Footer Modal Action Links */}
-            <div className="flex items-center gap-3 pt-4 border-t border-zinc-800/80 relative z-10 flex-wrap">
-              {selectedProject.githubUrl && (
-                <a
-                  href={selectedProject.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="py-2.5 px-5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-pink-500/40 text-xs font-semibold text-white transition-all duration-200 flex items-center gap-2 cursor-pointer"
-                >
-                  <span>Halaman Akses</span>
-                  <span>↗</span>
-                </a>
-              )}
-              {selectedProject.liveUrl && (
-                <a
-                  href={selectedProject.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="py-2.5 px-5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-xs font-semibold text-white shadow-md shadow-pink-500/20 hover:shadow-pink-500/40 transition-all duration-200 flex items-center gap-2 cursor-pointer"
-                >
-                  <span>Live Demo</span>
-                  <span>↗</span>
-                </a>
-              )}
-
-              {/* Tombol Tutup Cadangan */}
+              {/* TOMBOL CLOSE SILANG (X) */}
               <button
                 onClick={() => setSelectedProject(null)}
                 type="button"
-                className="ml-auto py-2.5 px-5 rounded-xl bg-zinc-900/80 border border-zinc-800 hover:border-pink-500/40 text-xs font-semibold text-zinc-300 hover:text-white transition-all duration-200 cursor-pointer active:scale-95"
+                className="absolute top-4 right-4 z-30 w-8 h-8 rounded-xl bg-zinc-900/90 border border-zinc-800 text-zinc-400 hover:text-white hover:border-pink-500/50 hover:bg-pink-500/10 active:scale-95 flex items-center justify-center transition-all duration-200 shadow-lg cursor-pointer group/closeBtn"
+                title="Tutup Modal"
+                aria-label="Tutup Detail Proyek"
               >
-                Tutup
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-5 h-5 group-hover/closeBtn:scale-110 group-hover/closeBtn:text-pink-400 transition-transform duration-200"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
+
+              {/* Header Modal */}
+              <div className="mb-6 pr-12 relative z-10">
+                <span className="text-xs font-mono text-pink-400 font-semibold uppercase tracking-wider">
+                  {selectedProject.category} — {selectedProject.period}
+                </span>
+                <h3 className="text-2xl font-bold text-white mt-1">
+                  {selectedProject.title}
+                </h3>
+                <p className="text-xs font-medium text-zinc-400 mt-1">
+                  {selectedProject.subtitle}
+                </p>
+              </div>
+
+              {/* Deskripsi Lengkap */}
+              <div className="mb-6 space-y-3 text-xs sm:text-sm text-zinc-300 leading-relaxed relative z-10">
+                <p>{selectedProject.description}</p>
+              </div>
+
+              {/* Poin-Poin Utama / Highlights */}
+              <div className="mb-6 relative z-10">
+                <h4 className="text-xs font-mono uppercase text-zinc-400 tracking-wider mb-3">
+                  Sorotan Utama & Fitur:
+                </h4>
+                <ul className="space-y-2">
+                  {selectedProject.highlights.map((item, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-2 text-xs text-zinc-300"
+                    >
+                      <span className="text-pink-400 mt-0.5">✦</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Tech Stack List */}
+              <div className="mb-8 relative z-10">
+                <h4 className="text-xs font-mono uppercase text-zinc-400 tracking-wider mb-3">
+                  Teknologi yang Digunakan:
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedProject.technologies.map((tech, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-medium text-pink-300"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Footer Modal Action Links */}
+              <div className="flex items-center gap-3 pt-4 border-t border-zinc-800/80 relative z-10 flex-wrap">
+                {selectedProject.githubUrl && (
+                  <a
+                    href={selectedProject.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-2.5 px-5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-pink-500/40 text-xs font-semibold text-white transition-all duration-200 flex items-center gap-2 cursor-pointer"
+                  >
+                    <span>Halaman Akses</span>
+                    <span>↗</span>
+                  </a>
+                )}
+                {selectedProject.liveUrl && (
+                  <a
+                    href={selectedProject.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-2.5 px-5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-xs font-semibold text-white shadow-md shadow-pink-500/20 hover:shadow-pink-500/40 transition-all duration-200 flex items-center gap-2 cursor-pointer"
+                  >
+                    <span>Live Demo</span>
+                    <span>↗</span>
+                  </a>
+                )}
+
+                {/* Tombol Tutup Cadangan */}
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  type="button"
+                  className="ml-auto py-2.5 px-5 rounded-xl bg-zinc-900/80 border border-zinc-800 hover:border-pink-500/40 text-xs font-semibold text-zinc-300 hover:text-white transition-all duration-200 cursor-pointer active:scale-95"
+                >
+                  Tutup
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body // Rendernya dilempar ke root body
+        )}
 
       {/* Keyframe Animations & Modal Styling */}
       <style>{`

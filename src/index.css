@@ -1,5 +1,41 @@
 @import "tailwindcss";
 
-*{
+/* 1. Mencegah background putih saat scroll cepat */
+html, 
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #020208 !important; 
+  color: #f4f4f5;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 2. Smooth scroll HANYA untuk HTML (Bukan bintang '*'), 
+   supaya tidak mengganggu animasi internal Modal/Dialog */
+html {
   scroll-behavior: smooth;
+}
+
+/* 3. Class khusus untuk Mengunci Scroll Latar Belakang saat Modal Terbuka */
+body.modal-open {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+/* 4. Hardware Acceleration untuk GPU */
+section, 
+header, 
+main {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  scroll-margin-top: 5rem;
+}
+
+/* Menghilangkan highlight biru browser HP */
+a, 
+button {
+  -webkit-tap-highlight-color: transparent;
 }
