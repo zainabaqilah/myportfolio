@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 
 interface ExperienceItem {
   id: number;
@@ -7,43 +7,43 @@ interface ExperienceItem {
   period: string;
   description: string;
   technologies: string[];
-  type: 'Work' | 'Project' | 'Academic';
+  type: 'PKL' | 'Project' | 'Academic';
 }
 
 const experiences: ExperienceItem[] = [
   {
     id: 1,
-    role: 'Front-End Web Developer',
-    organization: 'Web Development Project',
-    period: '2025 - Present',
+    role: 'Staff Teknologi Informasi',
+    organization: 'Badan Pusat Statistik (BPS)',
+    period: 'Jun 2025 - Ags 2025',
     description:
-      'Mengembangkan antarmuka aplikasi web modern menggunakan React, TypeScript, dan Tailwind CSS. Berfokus pada optimasi komponen reusabel, desain responsif, dan keterbacaan kode.',
-    technologies: ['React.js', 'TypeScript', 'Tailwind CSS', 'Vite'],
-    type: 'Project',
+      'Mengembangkan fitur sertifikat digital dengan mengintegrasikan frontend, backend, dan database yang telah tersedia.',
+    technologies: ['React.js', 'Next.js', 'Tailwind CSS', 'User Interface Design', 'GitHub', 'Kerja Tim'],
+    type: 'PKL',
   },
   {
     id: 2,
-    role: 'Full-Stack Developer Intern',
-    organization: 'Intern Management Web Project',
-    period: '2025',
+    role: 'Asisten Dosen Statistika',
+    organization: 'Universitas Lampung',
+    period: 'Sep 2025 - Des 2025',
     description:
-      'Membangun platform manajemen magang interaktif. Mengintegrasikan komponen UI responsif dengan arsitektur backend serta sistem kontrol versi berbasis Git & GitHub.',
-    technologies: ['Laravel', 'React', 'Tailwind CSS', 'Git & GitHub'],
-    type: 'Work',
+      'Membimbing praktikum Statistika, membantu analisis data dan penerapan metode statistika, mengevaluasi tugas, serta mendampingi mahasiswa dalam memahami konsep statistika selama 1 semester.',
+    technologies: ['Statistika', 'Probabilitas', 'Minitab', 'Komunikasi', 'Teaching', 'Problem Solving'],
+    type: 'Academic',
   },
   {
     id: 3,
-    role: 'Data & Computational Researcher',
-    organization: 'Undergraduate Thesis Research',
-    period: '2025 - 2026',
+    role: 'Asisten Dosen Basis Data',
+    organization: 'Universitas Lampung',
+    period: 'Sep 2024 - Des 2024',
     description:
-      'Melakukan analisis dan pemodelan prediktif berbasis data sekunder. Memproses klasifikasi dataset biner untuk analisis prediktif dengan optimasi akurasi model.',
-    technologies: ['Data Analysis', 'Binary Classification', 'Python', 'Excel'],
+      'Membimbing praktikum Basis Data, membantu mahasiswa memahami konsep basis data, SQL, dan perancangan database, mengevaluasi tugas, serta mendukung proses pembelajaran selama 1 semester',
+    technologies: ['Database', 'SQL', 'MySQL', 'Komunikasi', 'Teaching', 'Problem Solving'],
     type: 'Academic',
   },
 ];
 
-// Komponen Kartu 3D Individu (Ukuran Seragam)
+// Komponen Kartu 3D Individu
 const Card3D: React.FC<{ item: ExperienceItem }> = ({ item }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
@@ -78,7 +78,7 @@ const Card3D: React.FC<{ item: ExperienceItem }> = ({ item }) => {
   };
 
   return (
-    <div className="perspective-1000 w-full h-full flex">
+    <div className="perspective-1000 w-full h-full flex relative z-10">
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
@@ -88,7 +88,7 @@ const Card3D: React.FC<{ item: ExperienceItem }> = ({ item }) => {
           transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
           transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.5s ease-out',
         }}
-        className="relative w-full h-full bg-zinc-950/90 border border-zinc-800 rounded-2xl p-6 sm:p-7 shadow-2xl overflow-hidden group transform-style-3d cursor-pointer flex flex-col justify-between"
+        className="relative w-full h-full bg-zinc-950/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-6 sm:p-7 shadow-2xl overflow-hidden group transform-style-3d cursor-pointer flex flex-col justify-between"
       >
         {/* Dynamic Spotlight Glow */}
         <div
@@ -128,7 +128,7 @@ const Card3D: React.FC<{ item: ExperienceItem }> = ({ item }) => {
           </p>
         </div>
 
-        {/* Tech Stack Badges (Selalu Menempel di Bawah) */}
+        {/* Tech Stack Badges */}
         <div className="flex flex-wrap gap-2 pt-4 border-t border-zinc-800/80 mt-auto">
           {item.technologies.map((tech, idx) => (
             <span
@@ -145,14 +145,149 @@ const Card3D: React.FC<{ item: ExperienceItem }> = ({ item }) => {
 };
 
 export const Experience: React.FC = () => {
+  // dynamic Mouse Tracking
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = sectionRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      setMousePos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  // Generate Data Bintang Maju (Cruising Space)
+  const starsData = useMemo(() => {
+    const COUNT = 70;
+    return [...Array(COUNT)].map((_, i) => {
+      const startX = Math.random() * 100;
+      const startY = Math.random() * 100;
+
+      const offsetX = startX - 50;
+      const offsetY = startY - 50;
+
+      const endX = startX + offsetX * 0.8;
+      const endY = startY + offsetY * 0.8;
+
+      const sizeRandom = Math.random();
+      const size = sizeRandom > 0.85 ? 3 : sizeRandom > 0.6 ? 2 : 1;
+
+      const colorRandom = Math.random();
+      const color = colorRandom > 0.8 ? '#f472b6' : colorRandom > 0.6 ? '#38bdf8' : '#ffffff';
+      const hasGlow = size >= 2;
+
+      const duration = 15 + Math.random() * 20;
+      const delay = -(Math.random() * duration);
+
+      return {
+        startX,
+        startY,
+        endX,
+        endY,
+        size,
+        color,
+        hasGlow,
+        duration,
+        delay,
+      };
+    });
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="experience"
-      className="relative py-24 md:py-32 bg-black text-white overflow-hidden font-sans border-t border-zinc-900"
+      className="relative py-24 md:py-32 text-white overflow-hidden font-sans border-t border-zinc-900/80"
+      style={{ backgroundColor: '#020208' }}
     >
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/3 right-0 w-96 h-96 bg-pink-500/5 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-80 h-80 bg-purple-500/5 rounded-full blur-[140px] pointer-events-none" />
+      {/* ================================================================= */}
+      {/* 🌌 LATAR KOSMIK, NEBULA & INTERACTIVE GLOW (SAMA DENGAN HERO)     */ }
+      {/* ================================================================= */}
+
+      {/* 1. Base Deep Space Gradient */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at 50% -20%, #1a0826 0%, #080614 50%, #020208 100%)',
+        }}
+      />
+
+      {/* 2. Crimson / Pink Glowing Nebula */}
+      <div
+        className="absolute pointer-events-none rounded-full blur-[120px] opacity-60"
+        style={{
+          bottom: '-10%',
+          left: '-5%',
+          width: '45rem',
+          height: '45rem',
+          background: 'radial-gradient(circle, rgba(225, 29, 72, 0.35) 0%, rgba(131, 24, 67, 0.1) 60%, transparent 80%)',
+        }}
+      />
+
+      {/* 3. Deep Cyan / Teal Nebula Dust */}
+      <div
+        className="absolute pointer-events-none rounded-full blur-[140px] opacity-60"
+        style={{
+          top: '-15%',
+          right: '-5%',
+          width: '50rem',
+          height: '50rem',
+          background: 'radial-gradient(circle, rgba(14, 165, 233, 0.35) 0%, rgba(15, 118, 110, 0.1) 60%, transparent 80%)',
+        }}
+      />
+
+      {/* 4. Interactive Mouse Pointer Glow */}
+      <div
+        className="pointer-events-none absolute inset-0 transition-[background] duration-300 ease-out z-0"
+        style={{
+          background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(236,72,153,0.15), rgba(6,182,212,0.08) 45%, transparent 80%)`,
+        }}
+      />
+
+      {/* 5. Dynamic Starfield (Cruising Space Effect) */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {starsData.map((star, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              backgroundColor: star.color,
+              boxShadow: star.hasGlow ? `0 0 10px 1px ${star.color}` : 'none',
+
+              '--start-x': `${star.startX}vw`,
+              '--start-y': `${star.startY}vh`,
+              '--end-x': `${star.endX}vw`,
+              '--end-y': `${star.endY}vh`,
+
+              animation: `cruiseForward ${star.duration}s linear infinite, starTwinkle 4s ease-in-out infinite alternate`,
+              animationDelay: `${star.delay}s`,
+            } as React.CSSProperties}
+          />
+        ))}
+      </div>
+
+      {/* 6. Cyber Grid Overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
+
+      {/* 7. Vignette Darkening Edge */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          boxShadow: 'inset 0 0 160px 60px rgba(2, 2, 8, 0.9)',
+        }}
+      />
+
+      {/* ================================================================= */}
 
       <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
         
@@ -162,7 +297,7 @@ export const Experience: React.FC = () => {
           {/* Badge Atas */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
             <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] animate-pulse" />
-            <span>Portfolio & Milestone</span>
+            <span>Pengalaman</span>
           </div>
 
           {/* Judul Utama dengan Neon Glow & Subtitle Effect */}
@@ -171,9 +306,9 @@ export const Experience: React.FC = () => {
             <div className="absolute -inset-2 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             <h2 className="relative text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-              Jejak Proyek & <br />
+              Pengalaman Magang & <br />
               <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-100 to-zinc-400">
-                Pengalaman Profesional
+                Academic
                 {/* Underline Gradient Effect */}
                 <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full shadow-[0_0_10px_#ec4899]" />
               </span>{' '}
@@ -185,8 +320,8 @@ export const Experience: React.FC = () => {
 
         </div>
 
-        {/* GRID KARTU 3D (Setiap kolom dipaksa berukuran h-full) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+        {/* GRID KARTU 3D */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch relative z-10">
           {experiences.map((item) => (
             <div key={item.id} className="h-full flex">
               <Card3D item={item} />
@@ -203,6 +338,35 @@ export const Experience: React.FC = () => {
         }
         .transform-style-3d {
           transform-style: preserve-3d;
+        }
+
+        /* ----------------------------------------------------------- */
+        /* ANIMASI BINTANG MAJU TENANG (CRUISING FORWARD)              */
+        /* ----------------------------------------------------------- */
+        @keyframes cruiseForward {
+          0% {
+            opacity: 0;
+            left: var(--start-x);
+            top: var(--start-y);
+            transform: scale(0.2);
+          }
+          15% {
+            opacity: 0.7;
+          }
+          80% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+            left: var(--end-x);
+            top: var(--end-y);
+            transform: scale(2.2);
+          }
+        }
+
+        @keyframes starTwinkle {
+          0%, 100% { opacity: 0.9; }
+          50% { opacity: 0.3; }
         }
       `}</style>
     </section>

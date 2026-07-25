@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 
 // Types Definition
-type TabType = 'story' | 'skills' | 'education';
+type TabType = 'skills' | 'education' | 'certification';
 
 interface Skill {
   name: string;
-  category: 'Frontend' | 'Backend / Tools';
+  category: 'Frontend' | 'Backend / Tools' | 'Data Science';
   level: number; // Percentage
   icon: string;
 }
@@ -16,54 +16,235 @@ interface Metric {
   description: string;
 }
 
+interface Certification {
+  id: string;
+  title: string;
+  issuer: string;
+  year: string;
+  description: string;
+  fileUrl: string;
+  isPdf?: boolean;
+}
+
 const skillsData: Skill[] = [
-  { name: 'React.js', category: 'Frontend', level: 90, icon: '⚛️' },
-  { name: 'TypeScript', category: 'Frontend', level: 85, icon: '📘' },
+  { name: 'Python & Data Analysis', category: 'Data Science', level: 85, icon: '🐍' },
+  { name: 'SQL', category: 'Data Science', level: 85, icon: '🛢️' },
+  { name: 'Statistika & Machine Learning', category: 'Data Science', level: 92, icon: '📊' },
+  { name: 'Forecast & Time Series Analysis', category: 'Data Science', level: 95, icon: '⏳' },
+  { name: 'Microsoft Excel', category: 'Data Science', level: 90, icon: '📈' },
+  { name: 'React.js', category: 'Frontend', level: 80, icon: '⚛️' },
   { name: 'Tailwind CSS', category: 'Frontend', level: 92, icon: '🎨' },
-  { name: 'Next.js', category: 'Frontend', level: 80, icon: '▲' },
-  { name: 'Git & GitHub', category: 'Backend / Tools', level: 88, icon: '📦' },
-  { name: 'REST APIs', category: 'Backend / Tools', level: 85, icon: '⚡' },
+  { name: 'GitHub', category: 'Backend / Tools', level: 70, icon: '📦' },
+  // { name: 'Laravel', category: 'Backend / Tools', level: 75, icon: '⚡' },
+  { name: 'Team work & Communication', category: 'Backend / Tools', level: 95, icon: '🤝' },
 ];
 
-const metricsData: Metric[] = [
-  { label: 'Fokus Utama', value: 'Front-End', description: 'React, TSX & Tailwind CSS' },
-  { label: 'Komitmen Kode', value: 'Clean Code', description: 'Standardisasi & Performa Tinggi' },
-  { label: 'Responsif', value: '100%', description: 'Optimasi Semua Ukuran Layar' },
+// DATA SERTIFIKASI
+const certificationsData: Certification[] = [
+  {
+    id: 'cert-1',
+    title: 'Junior Web Developer',
+    issuer: 'Badan Nasional Sertifikasi Profesi (BNSP)',
+    year: '2024',
+    description:
+      'Pelatihan dan sertifikasi kompetensi Junior Programmer BNSP yang membekali kemampuan dalam mengembangkan aplikasi menggunakan pemrograman terstruktur, mengimplementasikan antarmuka pengguna (UI), menyusun fungsi dan file program secara rapi, menulis kode sesuai standar dan best practices, menerapkan perintah eksekusi bahasa pemrograman, serta memanfaatkan library atau komponen yang telah tersedia untuk mendukung pengembangan perangkat lunak.',
+    fileUrl: '/certificates/sertifikat-jwd.jpeg',
+    isPdf: false,
+  },
+  {
+    id: 'cert-2',
+    title: 'Introduction to HTML',
+    issuer: 'Sololearn',
+    year: '2024',
+    description:
+      'Mempelajari dasar-dasar pemrosesan data dan penggunaan bahasa pemrograman Python dalam analisis data.',
+    fileUrl: '/certificates/sertifikat-html.jpg',
+    isPdf: false,
+  },
+  {
+    id: 'cert-3',
+    title: 'Java Foundation',
+    issuer: 'Oracle Academy',
+    year: '2023',
+    description:
+      'Mempelajari dasar-dasar pemrograman Java, termasuk sintaks dasar, variabel, percabangan, perulangan, metode, dan pemrograman berorientasi objek.',
+    fileUrl: '/certificates/sertifikat-java.pdf',
+    isPdf: true,
+  },
 ];
+
+const metricsData: Metric[] = [];
 
 export const About: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('story');
+  const [activeTab, setActiveTab] = useState<TabType>('skills');
+  const [selectedCert, setSelectedCert] = useState<Certification | null>(null);
+
+  // Dynamic Mouse Tracking
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = sectionRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      setMousePos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  // Generate Data Bintang dengan Arah Maju (Cruising Space)
+  const starsData = useMemo(() => {
+    const COUNT = 85;
+    return [...Array(COUNT)].map((_, i) => {
+      const startX = Math.random() * 100;
+      const startY = Math.random() * 100;
+
+      const offsetX = startX - 50;
+      const offsetY = startY - 50;
+
+      const endX = startX + offsetX * 0.8;
+      const endY = startY + offsetY * 0.8;
+
+      const sizeRandom = Math.random();
+      const size = sizeRandom > 0.85 ? 3 : sizeRandom > 0.6 ? 2 : 1;
+
+      const colorRandom = Math.random();
+      const color = colorRandom > 0.8 ? '#f472b6' : colorRandom > 0.6 ? '#38bdf8' : '#ffffff';
+      const hasGlow = size >= 2;
+
+      const duration = 15 + Math.random() * 20;
+      const delay = -(Math.random() * duration);
+
+      return {
+        startX,
+        startY,
+        endX,
+        endY,
+        size,
+        color,
+        hasGlow,
+        duration,
+        delay,
+      };
+    });
+  }, []);
+
+  // Helper untuk mengecek apakah file berupa PDF
+  const checkIsPdf = (cert: Certification) => {
+    if (cert.isPdf !== undefined) return cert.isPdf;
+    return cert.fileUrl.toLowerCase().endsWith('.pdf');
+  };
 
   return (
     <section
+      ref={sectionRef}
       id="about"
-      className="relative py-24 md:py-32 bg-black text-white overflow-hidden font-sans border-t border-zinc-900"
+      className="relative py-24 md:py-32 text-white overflow-hidden font-sans border-t border-zinc-900/80"
+      style={{ backgroundColor: '#020208' }}
     >
-      {/* Background Subtle Accent */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-pink-500/5 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 right-10 w-80 h-80 bg-purple-500/5 rounded-full blur-[140px] pointer-events-none" />
+      {/* ================================================================= */}
+      {/* 🌌 LATAR KOSMIK, NEBULA & INTERACTIVE GLOW (SAMA DENGAN HERO)     */}
+      {/* ================================================================= */}
+
+      {/* 1. Base Deep Space Gradient */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at 50% -20%, #1a0826 0%, #080614 50%, #020208 100%)',
+        }}
+      />
+
+      {/* 2. Crimson / Pink Glowing Nebula */}
+      <div
+        className="absolute pointer-events-none rounded-full blur-[120px] opacity-60"
+        style={{
+          bottom: '-10%',
+          left: '-5%',
+          width: '45rem',
+          height: '45rem',
+          background: 'radial-gradient(circle, rgba(225, 29, 72, 0.35) 0%, rgba(131, 24, 67, 0.1) 60%, transparent 80%)',
+        }}
+      />
+
+      {/* 3. Deep Cyan / Teal Nebula Dust */}
+      <div
+        className="absolute pointer-events-none rounded-full blur-[140px] opacity-60"
+        style={{
+          top: '-15%',
+          right: '-5%',
+          width: '50rem',
+          height: '50rem',
+          background: 'radial-gradient(circle, rgba(14, 165, 233, 0.35) 0%, rgba(15, 118, 110, 0.1) 60%, transparent 80%)',
+        }}
+      />
+
+      {/* 4. Interactive Mouse Pointer Glow */}
+      <div
+        className="pointer-events-none absolute inset-0 transition-[background] duration-300 ease-out z-0"
+        style={{
+          background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(236,72,153,0.15), rgba(6,182,212,0.08) 45%, transparent 80%)`,
+        }}
+      />
+
+      {/* 5. Dynamic Starfield (Cruising Space Effect) */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {starsData.map((star, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              backgroundColor: star.color,
+              boxShadow: star.hasGlow ? `0 0 10px 1px ${star.color}` : 'none',
+
+              '--start-x': `${star.startX}vw`,
+              '--start-y': `${star.startY}vh`,
+              '--end-x': `${star.endX}vw`,
+              '--end-y': `${star.endY}vh`,
+
+              animation: `cruiseForward ${star.duration}s linear infinite, starTwinkle 4s ease-in-out infinite alternate`,
+              animationDelay: `${star.delay}s`,
+            } as React.CSSProperties}
+          />
+        ))}
+      </div>
+
+      {/* 6. Cyber Grid Overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
+
+      {/* 7. Vignette Darkening Edge */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          boxShadow: 'inset 0 0 160px 60px rgba(2, 2, 8, 0.9)',
+        }}
+      />
+
+      {/* ================================================================= */}
 
       <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
         
-        {/* SECTION HEADER (DISAMAKAN DENGAN EXPERIENCE.TSX) */}
+        {/* SECTION HEADER */}
         <div className="flex flex-col items-center text-center gap-4 mb-16">
-          
-          {/* Badge Atas */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
             <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] animate-pulse" />
             <span>Tentang Saya</span>
           </div>
 
-          {/* Judul Utama dengan Neon Glow & Underline Effect */}
           <div className="relative group cursor-default">
-            {/* Glow Backlight dibelakang Judul */}
             <div className="absolute -inset-2 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             <h2 className="relative text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-              Dedikasi Dalam Setiap <br />
+              Belajar, Berkembang, <br />
               <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-100 to-zinc-400">
-                Baris Kode & Antarmuka
-                {/* Underline Gradient Effect */}
+                Dan Terus Berkarya
                 <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full shadow-[0_0_10px_#ec4899]" />
               </span>{' '}
               <span className="inline-block text-pink-500 shadow-pink-500/50 hover:rotate-90 transition-transform duration-500">
@@ -71,33 +252,30 @@ export const About: React.FC = () => {
               </span>
             </h2>
           </div>
-
         </div>
 
         {/* BENTO GRID LAYOUT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
-          {/* LEFT COLUMN: Profile Card (Bento Item 1) */}
+          {/* LEFT COLUMN: Profile Card */}
           <div className="lg:col-span-5 flex flex-col gap-6">
-            <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 sm:p-8 relative overflow-hidden group shadow-2xl">
+            <div className="bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 rounded-2xl p-6 sm:p-8 relative overflow-hidden group shadow-2xl">
               <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl group-hover:bg-pink-500/20 transition-all duration-500 pointer-events-none" />
 
-              {/* Header Profile Badge */}
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-16 h-16 rounded-xl bg-zinc-900 border border-pink-500/30 flex items-center justify-center text-2xl font-bold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
                   ZA
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-white">Zainab Aqilah</h3>
-                  <p className="text-xs text-zinc-400 font-medium">Front-End Developer</p>
+                  <p className="text-xs text-zinc-400 font-medium">Data Analysis</p>
                 </div>
               </div>
 
               <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-6">
-                Seorang Web Developer yang berdedikasi membangun aplikasi web modern, efisien, dan estetis. Mengombinasikan kemampuan teknis logika pemrograman dengan perhatian tinggi pada aspek visual UI/UX.
+                Fresh Graduate S1 Ilmu Komputer Universitas Lampung dengan ketertarikan pada bidang Analisis Data, Statistika, dan Machine Learning. Memiliki pengalaman PKL di Badan Pusat Statistik (BPS) dengan keterlibatan langsung dalam pengembangan website serta sebagai asisten dosen Statistika, Basis Data, dan Matematika. Terbiasa mengolah data, melakukan analisis, serta mampu bekerja dalam tim, mudah beradaptasi dan belajar dengan cepat.
               </p>
 
-              {/* Quick Metrics */}
               <div className="grid grid-cols-1 gap-3 pt-4 border-t border-zinc-800/80">
                 {metricsData.map((metric, idx) => (
                   <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/60">
@@ -112,21 +290,11 @@ export const About: React.FC = () => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Interactive Tabs Content (Bento Item 2) */}
-          <div className="lg:col-span-7 bg-zinc-950 border border-zinc-800 rounded-2xl p-6 sm:p-8 shadow-2xl relative">
+          {/* RIGHT COLUMN: Interactive Tabs Content */}
+          <div className="lg:col-span-7 bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 rounded-2xl p-6 sm:p-8 shadow-2xl relative">
             
             {/* TAB NAVIGATION SWITCHER */}
-            <div className="flex items-center gap-2 p-1.5 bg-zinc-900 rounded-xl border border-zinc-800/80 mb-8 overflow-x-auto">
-              <button
-                onClick={() => setActiveTab('story')}
-                className={`flex-1 min-w-[100px] py-2 px-4 rounded-lg text-xs font-semibold transition-all duration-200 ${
-                  activeTab === 'story'
-                    ? 'bg-zinc-800 text-white border border-pink-500/30 shadow-sm'
-                    : 'text-zinc-400 hover:text-white'
-                }`}
-              >
-                Cerita Singkat
-              </button>
+            <div className="flex items-center gap-2 p-1.5 bg-zinc-900/90 rounded-xl border border-zinc-800/80 mb-8 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('skills')}
                 className={`flex-1 min-w-[100px] py-2 px-4 rounded-lg text-xs font-semibold transition-all duration-200 ${
@@ -135,7 +303,7 @@ export const About: React.FC = () => {
                     : 'text-zinc-400 hover:text-white'
                 }`}
               >
-                Tech Stack
+                Keterampilan
               </button>
               <button
                 onClick={() => setActiveTab('education')}
@@ -147,24 +315,19 @@ export const About: React.FC = () => {
               >
                 Pendidikan
               </button>
+              <button
+                onClick={() => setActiveTab('certification')}
+                className={`flex-1 min-w-[100px] py-2 px-4 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                  activeTab === 'certification'
+                    ? 'bg-zinc-800 text-white border border-pink-500/30 shadow-sm'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                Sertifikasi
+              </button>
             </div>
 
-            {/* TAB CONTENT 1: STORY */}
-            {activeTab === 'story' && (
-              <div className="space-y-4 animate-fadeIn">
-                <h4 className="text-base font-bold text-white flex items-center gap-2">
-                  <span className="text-pink-400">✦</span> Perjalanan & Passion Saya
-                </h4>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Perjalanan saya di dunia pengembangan web didasari oleh ketertarikan mendalam terhadap bagaimana teknologi dan desain dapat berpadu. Saya berfokus menggunakan ekosistem **React** dan **TypeScript** untuk menciptakan komponen yang efisien, mudah dikembangkan, dan memiliki tipe data yang aman.
-                </p>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                  Selain menulis kode antarmuka, saya aktif melakukan riset dan pengerjaan proyek berbasis data, memastikan aplikasi tidak hanya terlihat menawan namun juga memiliki dasar performa dan arsitektur yang kokoh.
-                </p>
-              </div>
-            )}
-
-            {/* TAB CONTENT 2: SKILLS */}
+            {/* TAB CONTENT 1: KETERAMPILAN */}
             {activeTab === 'skills' && (
               <div className="space-y-5 animate-fadeIn">
                 <h4 className="text-base font-bold text-white flex items-center gap-2 mb-2">
@@ -192,7 +355,7 @@ export const About: React.FC = () => {
               </div>
             )}
 
-            {/* TAB CONTENT 3: EDUCATION */}
+            {/* TAB CONTENT 2: PENDIDIKAN */}
             {activeTab === 'education' && (
               <div className="space-y-6 animate-fadeIn">
                 <h4 className="text-base font-bold text-white flex items-center gap-2">
@@ -201,12 +364,79 @@ export const About: React.FC = () => {
                 <div className="relative border-l border-zinc-800 pl-6 space-y-6">
                   <div className="relative">
                     <span className="absolute -left-[31px] top-1 w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
-                    <span className="text-[11px] font-mono text-pink-400">Mahasiswa / Undergraduate Student</span>
-                    <h5 className="text-sm font-bold text-white mt-1">S1 Ilmu Komputer / Teknik Informatika</h5>
+                    <span className="text-[11px] font-mono text-pink-400">Fresh Graduate</span>
+                    <h5 className="text-sm font-bold text-white mt-1">S1 Ilmu Komputer</h5>
                     <p className="text-xs text-zinc-400 mt-1">
-                      Berfokus pada pengembangan aplikasi web, analisis data, dan penyelesaian tugas akhir skripsi terkait pemodelan komputasi.
+                      Universitas Lampung, IPK: 3.85.
                     </p>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB CONTENT 3: SERTIFIKASI */}
+            {activeTab === 'certification' && (
+              <div className="space-y-4 animate-fadeIn">
+                <h4 className="text-base font-bold text-white flex items-center gap-2 mb-4">
+                  <span className="text-pink-400">✦</span> Lisensi & Sertifikasi
+                </h4>
+                <div className="space-y-3">
+                  {certificationsData.map((cert) => (
+                    <div
+                      key={cert.id}
+                      className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 hover:border-pink-500/30 transition-all duration-300 flex flex-col justify-between gap-3 group"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-2">
+                          <h5 className="text-xs font-bold text-white group-hover:text-pink-400 transition-colors">
+                            {cert.title}
+                          </h5>
+                          <span className="text-[10px] font-mono text-pink-400 px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 shrink-0">
+                            {cert.year}
+                          </span>
+                        </div>
+                        <p className="text-[11px] font-medium text-pink-400/90 mt-1">{cert.issuer}</p>
+                        <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
+                          {cert.description}
+                        </p>
+                      </div>
+
+                      {/* TOMBOL PETA/LIHAT SERTIFIKAT */}
+                      <div className="pt-3 border-t border-zinc-800/60 flex items-center justify-between">
+                        <span className="text-[10px] font-mono text-zinc-500 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-pink-500" />
+                          Terverifikasi
+                        </span>
+                        
+                        <button
+                          onClick={() => setSelectedCert(cert)}
+                          className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-pink-500/20 border border-zinc-800 hover:border-pink-500/50 text-xs font-semibold text-pink-400 hover:text-pink-300 transition-all duration-200 flex items-center gap-1.5"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.8}
+                            stroke="currentColor"
+                            className="w-3.5 h-3.5"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                            />
+                          </svg>
+                          <span>Lihat Sertifikat</span>
+                        </button>
+                      </div>
+
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -216,6 +446,141 @@ export const About: React.FC = () => {
         </div>
 
       </div>
+
+      {/* MODAL LIGHTBOX / PREVIEW SERTIFIKAT */}
+      {selectedCert && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
+          onClick={() => setSelectedCert(null)}
+        >
+          <div
+            className="relative w-full max-w-4xl bg-zinc-950 border border-zinc-800 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(236,72,153,0.15)] flex flex-col h-[85vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/50 shrink-0">
+              <div>
+                <h3 className="text-sm sm:text-base font-bold text-white">
+                  {selectedCert.title}
+                </h3>
+                <p className="text-xs text-pink-400 font-medium mt-0.5">
+                  {selectedCert.issuer} — ({selectedCert.year})
+                </p>
+              </div>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedCert(null)}
+                className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-pink-500/40 text-zinc-400 hover:text-white flex items-center justify-center transition-colors"
+                title="Tutup"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Body / Document Preview */}
+            <div className="p-2 sm:p-4 overflow-y-auto flex items-center justify-center bg-zinc-900/30 flex-1 relative">
+              {checkIsPdf(selectedCert) ? (
+                /* PREVIEW FILE PDF DENGAN OBJECT FALLBACK */
+                <object
+                  data={selectedCert.fileUrl}
+                  type="application/pdf"
+                  className="w-full h-full min-h-[400px] rounded-lg border border-zinc-800 bg-zinc-900"
+                >
+                  <div className="flex flex-col items-center justify-center h-full p-6 text-center">
+                    <p className="text-xs text-zinc-300 mb-4">
+                      Browser kamu tidak mendukung pratinjau langsung PDF secara tertanam.
+                    </p>
+                    <a
+                      href={selectedCert.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-xl bg-pink-500/20 border border-pink-500/40 text-pink-400 text-xs font-semibold hover:bg-pink-500/30 transition-all"
+                    >
+                      Buka PDF di Tab Baru ↗
+                    </a>
+                  </div>
+                </object>
+              ) : (
+                /* PREVIEW FILE GAMBAR */
+                <img
+                  src={selectedCert.fileUrl}
+                  alt={selectedCert.title}
+                  className="max-h-full w-auto object-contain rounded-lg border border-zinc-800 shadow-md"
+                  onError={(e) => {
+                    (e.target as HTMLElement).style.display = 'none';
+                    const fallbackElem = document.getElementById('cert-fallback');
+                    if (fallbackElem) fallbackElem.style.display = 'flex';
+                  }}
+                />
+              )}
+
+              {/* Fallback Display jika Gambar Rusak / Tidak Ditemukan */}
+              <div
+                id="cert-fallback"
+                className="hidden flex-col items-center justify-center text-center p-8 border border-dashed border-zinc-800 rounded-xl bg-zinc-950/90 max-w-md absolute inset-auto z-10"
+              >
+                <span className="text-3xl mb-2">📂</span>
+                <p className="text-xs font-semibold text-zinc-300">
+                  Berkas Sertifikat Tidak Ditemukan
+                </p>
+                <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed">
+                  Pastikan nama file di folder <code className="text-pink-400 font-mono">public/certificates/</code> adalah <code className="text-pink-400 font-mono">{selectedCert.fileUrl.replace('/certificates/', '')}</code>.
+                </p>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-zinc-800 flex items-center justify-between bg-zinc-900/50 text-xs shrink-0">
+              <p className="text-zinc-500 hidden sm:block">
+                Zainab Aqilah — Sertifikat
+              </p>
+              
+              <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <a
+                  href={selectedCert.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold shadow-md shadow-pink-500/20 hover:opacity-95 transition-all text-center flex items-center gap-1.5"
+                >
+                  <span>Buka Ukuran Penuh / Unduh</span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* Keyframe Animations */}
+      <style>{`
+        @keyframes cruiseForward {
+          0% {
+            opacity: 0;
+            left: var(--start-x);
+            top: var(--start-y);
+            transform: scale(0.2);
+          }
+          15% {
+            opacity: 0.7;
+          }
+          80% {
+            opacity: 1;
+          }
+          100% {
+            opacity: 0;
+            left: var(--end-x);
+            top: var(--end-y);
+            transform: scale(2.2);
+          }
+        }
+
+        @keyframes starTwinkle {
+          0%, 100% { opacity: 0.9; }
+          50% { opacity: 0.3; }
+        }
+      `}</style>
     </section>
   );
 };
