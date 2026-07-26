@@ -180,9 +180,9 @@ export const Hero: React.FC = () => {
                 mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               }`}
             >
-              Data Analytics <br />
+              Data Science <br />
               <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">
-                & Front-End Development
+                & Data Analytics
                 <span className="absolute left-0 -bottom-1 h-px w-full bg-gradient-to-r from-pink-500/60 via-pink-500/20 to-transparent" />
               </span>{' '}
               <span className="inline-block text-pink-500 drop-shadow-[0_0_10px_rgba(236,72,153,0.5)] hover:rotate-90 transition-transform duration-500 cursor-default">

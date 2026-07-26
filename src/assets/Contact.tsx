@@ -75,7 +75,7 @@ export const Contact: React.FC = () => {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative py-24 md:py-32 pb-6 text-white overflow-hidden font-sans border-t border-zinc-900/80"
+      className="relative py-12 md:py-16 pb-8 text-white overflow-hidden font-sans border-t border-zinc-900/80 min-h-[calc(100vh-80px)] flex flex-col justify-between"
       style={{ backgroundColor: '#020208' }}
     >
       {/* 🌌 LATAR KOSMIK, NEBULA & INTERACTIVE GLOW */}
@@ -147,11 +147,12 @@ export const Contact: React.FC = () => {
         }}
       />
 
-      <div className="max-w-3xl mx-auto px-6 md:px-8 relative z-10">
+      <div className="max-w-3xl mx-auto px-6 md:px-8 relative z-10 w-full my-auto">
         
         {/* SECTION HEADER */}
-        <div className="flex flex-col items-center text-center gap-4 mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
+        <div className="flex flex-col items-center text-center gap-4 mb-12 sm:mb-16">
+          {/* 🟢 Badge Header HP dinaikkan ke text-xs sm:text-sm */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs sm:text-sm font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
             <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] animate-pulse" />
             <span>Kontak & Diskusi</span>
           </div>
@@ -171,7 +172,8 @@ export const Contact: React.FC = () => {
             </h2>
           </div>
 
-          <p className="text-xs sm:text-sm text-zinc-400 max-w-md mt-2">
+          {/* 🟢 Deskripsi Subtitle HP dinaikkan ke text-sm sm:text-base */}
+          <p className="text-sm sm:text-base text-zinc-400 max-w-md mt-2">
             Terbuka untuk peluang kerja, kolaborasi, maupun diskusi seputar teknologi. Silakan hubungi saya melalui kontak di bawah ini.
           </p>
         </div>
@@ -179,7 +181,7 @@ export const Contact: React.FC = () => {
         {/* 2x2 GRID CONTACT LINKS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-0 max-w-2xl mx-auto">
           
-          {/* BARIS ATAS 1: EMAIL */}
+          {/* EMAIL */}
           <div className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 hover:border-pink-500/50 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all duration-300 group">
             <a
               href={`mailto:${emailAddress}`}
@@ -203,26 +205,29 @@ export const Contact: React.FC = () => {
             </a>
 
             <div className="flex flex-col min-w-0">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+              {/* 🟢 Label Kategori dinaikkan ke text-xs */}
+              <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
                 Email
               </span>
+              {/* 🟢 Nilai Email dinaikkan ke text-sm sm:text-base */}
               <a
                 href={`mailto:${emailAddress}`}
-                className="text-xs font-semibold text-zinc-200 hover:text-pink-400 transition-colors truncate"
+                className="text-sm sm:text-base font-semibold text-zinc-200 hover:text-pink-400 transition-colors truncate"
                 title={emailAddress}
               >
                 {emailAddress}
               </a>
+              {/* 🟢 Sub-action dinaikkan ke text-xs */}
               <button
                 onClick={handleCopyEmail}
-                className="text-[10px] font-mono text-left text-pink-400/80 hover:text-pink-400 mt-0.5 transition-colors"
+                className="text-xs font-mono text-left text-pink-400/80 hover:text-pink-400 mt-0.5 transition-colors cursor-pointer"
               >
                 {copied ? '✓ Tersalin!' : 'Klik untuk salin'}
               </button>
             </div>
           </div>
 
-          {/* BARIS ATAS 2: WHATSAPP */}
+          {/* WHATSAPP */}
           <div className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 hover:border-pink-500/50 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all duration-300 group">
             <a
               href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
@@ -244,26 +249,26 @@ export const Contact: React.FC = () => {
             </a>
 
             <div className="flex flex-col min-w-0">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+              <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
                 WhatsApp
               </span>
               <a
                 href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-semibold text-zinc-200 hover:text-pink-400 transition-colors flex items-center gap-1"
+                className="text-sm sm:text-base font-semibold text-zinc-200 hover:text-pink-400 transition-colors flex items-center gap-1"
               >
                 <span>Chat Langsung</span>
                 <span>↗</span>
               </a>
-              <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1 mt-0.5">
+              <span className="text-xs font-mono text-emerald-400 flex items-center gap-1 mt-0.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Respon Cepat
               </span>
             </div>
           </div>
 
-          {/* BARIS BAWAH 1: INSTAGRAM */}
+          {/* INSTAGRAM */}
           <div className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 hover:border-pink-500/50 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all duration-300 group">
             <a
               href={`https://instagram.com/${instagramUsername}`}
@@ -285,25 +290,25 @@ export const Contact: React.FC = () => {
             </a>
 
             <div className="flex flex-col min-w-0">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+              <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
                 Instagram
               </span>
               <a
                 href={`https://instagram.com/${instagramUsername}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-semibold text-zinc-200 hover:text-pink-400 transition-colors flex items-center gap-1 truncate"
+                className="text-sm sm:text-base font-semibold text-zinc-200 hover:text-pink-400 transition-colors flex items-center gap-1 truncate"
               >
                 <span>@{instagramUsername}</span>
                 <span>↗</span>
               </a>
-              <span className="text-[10px] font-mono text-pink-400/80 mt-0.5">
+              <span className="text-xs font-mono text-pink-400/80 mt-0.5">
                 Aktivitas
               </span>
             </div>
           </div>
 
-          {/* BARIS BAWAH 2: LINKEDIN */}
+          {/* LINKEDIN */}
           <div className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/80 hover:border-pink-500/50 hover:shadow-[0_0_20px_rgba(236,72,153,0.15)] transition-all duration-300 group">
             <a
               href={linkedinUrl}
@@ -325,26 +330,35 @@ export const Contact: React.FC = () => {
             </a>
 
             <div className="flex flex-col min-w-0">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+              <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
                 LinkedIn
               </span>
               <a
                 href={linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-semibold text-zinc-200 hover:text-pink-400 transition-colors flex items-center gap-1 truncate"
+                className="text-sm sm:text-base font-semibold text-zinc-200 hover:text-pink-400 transition-colors flex items-center gap-1 truncate"
               >
                 <span>Zainab Aqilah</span>
                 <span>↗</span>
               </a>
-              <span className="text-[10px] font-mono text-pink-400/80 mt-0.5">
+              <span className="text-xs font-mono text-pink-400/80 mt-0.5">
                 Koneksi Profesional
               </span>
             </div>
           </div>
 
         </div>
+
       </div>
+
+      {/* FOOTER */}
+      <footer className="relative z-10 text-center pb-2 pt-2">
+        {/* 🟢 Footer HP dinaikkan ke text-xs */}
+        <p className="text-xs text-zinc-600 font-mono">
+          © {new Date().getFullYear()} Zainab Aqilah. All rights reserved.
+        </p>
+      </footer>
 
       {/* Keyframe Animations */}
       <style>{`

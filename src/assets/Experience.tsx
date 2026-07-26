@@ -17,8 +17,8 @@ const experiences: ExperienceItem[] = [
     organization: 'Badan Pusat Statistik (BPS)',
     period: 'Jun 2025 - Ags 2025',
     description:
-      'Mengembangkan fitur sertifikat digital dengan mengintegrasikan frontend, backend, dan database yang telah tersedia.',
-    technologies: ['React.js', 'Next.js', 'Tailwind CSS', 'User Interface Design', 'GitHub', 'Kerja Tim'],
+      'Melakukan entry, verifikasi, dan pengelolaan data menggunakan Microsoft Excel serta memastikan akurasi dan konsistensi data. Berkontribusi dalam digitalisasi proses administrasi melalui pengembangan website pengelolaan mahasiswa PKL dan berkolaborasi dengan tim dalam pengembangan sistem.',
+    technologies: ['Microsoft Excel', 'Canva', 'React.js', 'Next.js', 'Tailwind CSS', 'User Interface Design', 'GitHub', 'Kerja Tim'],
     type: 'PKL',
   },
   {
@@ -37,7 +37,7 @@ const experiences: ExperienceItem[] = [
     organization: 'Universitas Lampung',
     period: 'Sep 2024 - Des 2024',
     description:
-      'Membimbing praktikum Basis Data, membantu mahasiswa memahami konsep basis data, SQL, dan perancangan database, mengevaluasi tugas, serta mendukung proses pembelajaran selama 1 semester',
+      'Membimbing praktikum Basis Data, membantu mahasiswa memahami konsep basis data, SQL, dan perancangan database, mengevaluasi tugas, serta mendukung proses pembelajaran selama 1 semester.',
     technologies: ['Database', 'SQL', 'MySQL', 'Komunikasi', 'Teaching', 'Problem Solving'],
     type: 'Academic',
   },
@@ -88,7 +88,7 @@ const Card3D: React.FC<{ item: ExperienceItem }> = ({ item }) => {
           transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
           transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.5s ease-out',
         }}
-        className="relative w-full h-full bg-zinc-950/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-6 sm:p-7 shadow-2xl overflow-hidden group transform-style-3d  flex flex-col justify-between"
+        className="relative w-full h-full bg-zinc-950/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-6 sm:p-7 shadow-2xl overflow-hidden group transform-style-3d flex flex-col justify-between"
       >
         {/* Dynamic Spotlight Glow */}
         <div
@@ -105,25 +105,29 @@ const Card3D: React.FC<{ item: ExperienceItem }> = ({ item }) => {
         <div>
           {/* Header Kartu */}
           <div className="flex items-center justify-between gap-3 mb-5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-[11px] font-mono text-pink-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
+            {/* 🟢 Badge Type dinaikkan ke text-xs sm:text-sm */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs sm:text-sm font-mono text-pink-400 font-medium">
+              <span className="w-2 h-2 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
               <span>{item.type}</span>
             </div>
-            <span className="text-xs font-mono text-zinc-500">{item.period}</span>
+            {/* 🟢 Periode Waktu dinaikkan ke text-xs sm:text-sm */}
+            <span className="text-xs sm:text-sm font-mono text-zinc-400 font-medium">{item.period}</span>
           </div>
 
           {/* Judul Role & Organisasi */}
           <div className="mb-4">
-            <h3 className="text-lg font-bold text-white group-hover:text-pink-400 transition-colors duration-200 leading-snug">
+            {/* 🟢 Judul Role dinaikkan di HP ke text-lg sm:text-xl */}
+            <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-pink-400 transition-colors duration-200 leading-snug">
               {item.role}
             </h3>
-            <p className="text-xs font-semibold text-zinc-400 mt-1">
+            {/* 🟢 Nama Organisasi dinaikkan di HP ke text-sm sm:text-base */}
+            <p className="text-sm sm:text-base font-semibold text-pink-400/90 mt-1.5">
               {item.organization}
             </p>
           </div>
 
-          {/* Deskripsi */}
-          <p className="text-xs text-zinc-400 leading-relaxed mb-6">
+          {/* 🟢 Deskripsi dinaikkan di HP dari text-xs ke text-sm sm:text-base */}
+          <p className="text-sm sm:text-base text-zinc-300/90 leading-relaxed mb-6">
             {item.description}
           </p>
         </div>
@@ -131,9 +135,10 @@ const Card3D: React.FC<{ item: ExperienceItem }> = ({ item }) => {
         {/* Tech Stack Badges */}
         <div className="flex flex-wrap gap-2 pt-4 border-t border-zinc-800/80 mt-auto">
           {item.technologies.map((tech, idx) => (
+            /* 🟢 Badge Tech Stack dinaikkan di HP dari text-xs ke text-xs sm:text-sm */
             <span
               key={idx}
-              className="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-[11px] font-semibold text-zinc-300 group-hover:border-zinc-700/80 transition-colors"
+              className="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-xs sm:text-sm font-semibold text-zinc-300 group-hover:border-zinc-700/80 transition-colors"
             >
               {tech}
             </span>
@@ -205,14 +210,10 @@ export const Experience: React.FC = () => {
     <section
       ref={sectionRef}
       id="experience"
-      className="relative py-24 md:py-32 text-white overflow-hidden font-sans border-t border-zinc-900/80"
+      className="relative py-12 md:py-16 text-white overflow-hidden font-sans border-t border-zinc-900/80"
       style={{ backgroundColor: '#020208' }}
     >
-      {/* ================================================================= */}
-      {/* 🌌 LATAR KOSMIK, NEBULA & INTERACTIVE GLOW (SAMA DENGAN HERO)     */ }
-      {/* ================================================================= */}
-
-      {/* 1. Base Deep Space Gradient */}
+      {/* 🌌 LATAR KOSMIK & NEBULA */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -220,7 +221,6 @@ export const Experience: React.FC = () => {
         }}
       />
 
-      {/* 2. Crimson / Pink Glowing Nebula */}
       <div
         className="absolute pointer-events-none rounded-full blur-[120px] opacity-60"
         style={{
@@ -232,7 +232,6 @@ export const Experience: React.FC = () => {
         }}
       />
 
-      {/* 3. Deep Cyan / Teal Nebula Dust */}
       <div
         className="absolute pointer-events-none rounded-full blur-[140px] opacity-60"
         style={{
@@ -244,7 +243,6 @@ export const Experience: React.FC = () => {
         }}
       />
 
-      {/* 4. Interactive Mouse Pointer Glow */}
       <div
         className="pointer-events-none absolute inset-0 transition-[background] duration-300 ease-out z-0"
         style={{
@@ -252,7 +250,6 @@ export const Experience: React.FC = () => {
         }}
       />
 
-      {/* 5. Dynamic Starfield (Cruising Space Effect) */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {starsData.map((star, i) => (
           <div
@@ -276,10 +273,8 @@ export const Experience: React.FC = () => {
         ))}
       </div>
 
-      {/* 6. Cyber Grid Overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
 
-      {/* 7. Vignette Darkening Edge */}
       <div
         className="pointer-events-none absolute inset-0 z-0"
         style={{
@@ -287,29 +282,25 @@ export const Experience: React.FC = () => {
         }}
       />
 
-      {/* ================================================================= */}
-
       <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
         
-        {/* HEADER SECTION DENGAN EFEK JUDUL BARU */}
-        <div className="flex flex-col items-center text-center gap-4 mb-16">
+        {/* HEADER SECTION */}
+        <div className="flex flex-col items-center text-center gap-4 mb-12 sm:mb-16">
           
           {/* Badge Atas */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs sm:text-sm font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
             <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] animate-pulse" />
             <span>Pengalaman</span>
           </div>
 
-          {/* Judul Utama dengan Neon Glow & Subtitle Effect */}
+          {/* Judul Utama */}
           <div className="relative group cursor-default">
-            {/* Glow Backlight dibelakang Judul */}
             <div className="absolute -inset-2 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             <h2 className="relative text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
               Pengalaman Magang & <br />
               <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-100 to-zinc-400">
                 Academic
-                {/* Underline Gradient Effect */}
                 <span className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full shadow-[0_0_10px_#ec4899]" />
               </span>{' '}
               <span className="inline-block text-pink-500 shadow-pink-500/50 hover:rotate-90 transition-transform duration-500">
@@ -340,9 +331,6 @@ export const Experience: React.FC = () => {
           transform-style: preserve-3d;
         }
 
-        /* ----------------------------------------------------------- */
-        /* ANIMASI BINTANG MAJU TENANG (CRUISING FORWARD)              */
-        /* ----------------------------------------------------------- */
         @keyframes cruiseForward {
           0% {
             opacity: 0;

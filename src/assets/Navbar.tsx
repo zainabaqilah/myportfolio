@@ -19,7 +19,7 @@ export const Navbar: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>('Home');
   const [scrollProgress, setScrollProgress] = useState<number>(0);
 
-  // 1. Ref untuk mengunci handleScroll saat user mengeklik menu secara manual
+  // Ref untuk mengunci handleScroll saat user mengeklik menu secara manual
   const isManualScroll = useRef<boolean>(false);
   const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -35,7 +35,7 @@ export const Navbar: React.FC = () => {
         setScrollProgress(Math.min(Math.max(progress, 0), 100));
       }
 
-      // 2. JIKA SEDANG MANUAL SCROLL (KLIK MENU), BAIAPAKAN DETEKSI SCROLL OTOMATIS
+      // JIKA SEDANG MANUAL SCROLL (KLIK MENU), ABAIKAN DETEKSI SCROLL OTOMATIS
       if (isManualScroll.current) return;
 
       // Cek apakah scroll sudah berada di paling bawah halaman (Deteksi Contact)
@@ -66,7 +66,7 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 3. Helper klik navigasi yang langsung mengunci activeSection tanpa interupsi
+  // Helper klik navigasi yang langsung mengunci activeSection tanpa interupsi
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, name: string, href: string) => {
     e.preventDefault();
     
@@ -107,12 +107,12 @@ export const Navbar: React.FC = () => {
           <a
             href="#home"
             onClick={(e) => handleNavClick(e, 'Home', '#home')}
-            className="flex items-center gap-2 text-base font-bold tracking-wide text-white group cursor-pointer"
+            className="flex items-center gap-2 font-bold tracking-wide text-white group cursor-pointer"
           >
-            <span className="font-mono uppercase tracking-widest text-sm text-zinc-100 group-hover:text-pink-400 transition-colors">
+            <span className="font-mono uppercase tracking-widest text-sm sm:text-base font-bold text-zinc-100 group-hover:text-pink-400 transition-colors">
               Portfolio
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
+            <span className="w-2 h-2 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
           </a>
 
           {/* 2. DESKTOP NAVIGATION MENU */}
@@ -127,7 +127,7 @@ export const Navbar: React.FC = () => {
                       <a
                         href={link.href}
                         onClick={(e) => handleNavClick(e, link.name, link.href)}
-                        className={`relative px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-2 border cursor-pointer ${
+                        className={`relative px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 flex items-center gap-2 border cursor-pointer ${
                           isActive
                             ? 'text-white bg-zinc-800 border-pink-500/40 shadow-sm'
                             : 'text-zinc-400 border-transparent hover:text-white hover:bg-zinc-800/60 hover:border-zinc-700/80'
@@ -149,7 +149,7 @@ export const Navbar: React.FC = () => {
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, 'Contact', '#contact')}
-              className={`inline-flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/20 hover:shadow-pink-500/40 hover:opacity-95 transition-all duration-200 cursor-pointer ${
+              className={`inline-flex items-center gap-2 px-5 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md shadow-pink-500/20 hover:shadow-pink-500/40 hover:opacity-95 transition-all duration-200 cursor-pointer ${
                 activeSection === 'Contact' ? 'ring-2 ring-pink-400 ring-offset-2 ring-offset-black' : ''
               }`}
             >
@@ -202,7 +202,7 @@ export const Navbar: React.FC = () => {
                     <a
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.name, link.href)}
-                      className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-semibold border transition-all duration-200 cursor-pointer ${
+                      className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold border transition-all duration-200 cursor-pointer ${
                         isActive
                           ? 'text-white bg-zinc-800 border-pink-500/40'
                           : 'text-zinc-400 border-transparent hover:text-white hover:bg-zinc-800/40 hover:border-zinc-800'
@@ -221,7 +221,7 @@ export const Navbar: React.FC = () => {
               <a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, 'Contact', '#contact')}
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold text-xs shadow-md shadow-pink-500/20 cursor-pointer"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold text-sm shadow-md shadow-pink-500/20 cursor-pointer"
               >
                 <span>Contact</span>
               </a>

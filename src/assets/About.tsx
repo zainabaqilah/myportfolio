@@ -3,11 +3,12 @@ import { createPortal } from 'react-dom';
 
 // Types Definition
 type TabType = 'skills' | 'education' | 'certification';
+type SkillLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
 interface Skill {
   name: string;
   category: 'Frontend' | 'Backend / Tools' | 'Data Science';
-  level: number;
+  level: SkillLevel;
   icon: string;
 }
 
@@ -28,15 +29,16 @@ interface Certification {
 }
 
 const skillsData: Skill[] = [
-  { name: 'Python & Data Analysis', category: 'Data Science', level: 85, icon: '🐍' },
-  { name: 'SQL', category: 'Data Science', level: 85, icon: '🛢️' },
-  { name: 'Statistika & Machine Learning', category: 'Data Science', level: 92, icon: '📊' },
-  { name: 'Forecast & Time Series Analysis', category: 'Data Science', level: 95, icon: '⏳' },
-  { name: 'Microsoft Excel', category: 'Data Science', level: 90, icon: '📈' },
-  { name: 'React.js', category: 'Frontend', level: 80, icon: '⚛️' },
-  { name: 'Tailwind CSS', category: 'Frontend', level: 92, icon: '🎨' },
-  { name: 'GitHub', category: 'Backend / Tools', level: 70, icon: '📦' },
-  { name: 'Team work & Communication', category: 'Backend / Tools', level: 95, icon: '🤝' },
+  { name: 'Python & Data Analysis', category: 'Data Science', level: 'Intermediate', icon: '🐍' },
+  { name: 'Forecast & Time Series Analysis', category: 'Data Science', level: 'Advanced', icon: '⏳' },
+  { name: 'SQL', category: 'Data Science', level: 'Intermediate', icon: '🛢️' },
+  { name: 'Statistics', category: 'Data Science', level: 'Advanced', icon: '📊' },
+  { name: 'Machine Learning', category: 'Data Science', level: 'Intermediate', icon: '🤖' },
+  { name: 'Microsoft Excel', category: 'Data Science', level: 'Advanced', icon: '📈' },
+  { name: 'React.js', category: 'Frontend', level: 'Intermediate', icon: '⚛️' },
+  { name: 'Tailwind CSS', category: 'Frontend', level: 'Advanced', icon: '🎨' },
+  { name: 'GitHub', category: 'Backend / Tools', level: 'Intermediate', icon: '📦' },
+  { name: 'Team work & Communication', category: 'Backend / Tools', level: 'Advanced', icon: '🤝' },
 ];
 
 const certificationsData: Certification[] = [
@@ -56,7 +58,7 @@ const certificationsData: Certification[] = [
     issuer: 'Sololearn',
     year: '2024',
     description:
-      'Mempelajari dasar-dasar pemrosesan data dan penggunaan bahasa pemrograman Python dalam analisis data.',
+      'Mempelajari dasar-dasar HTML, struktur halaman web, elemen HTML, formulir, tabel, hyperlink, gambar, serta pembuatan halaman web sederhana.',
     fileUrl: './certificates/sertifikat-html.jpg',
     isPdf: false,
   },
@@ -73,6 +75,20 @@ const certificationsData: Certification[] = [
 ];
 
 const metricsData: Metric[] = [];
+
+// Helper untuk menghitung persentase bar berdasarkan level
+const getLevelPercentage = (level: SkillLevel): string => {
+  switch (level) {
+    case 'Beginner':
+      return '33%';
+    case 'Intermediate':
+      return '66%';
+    case 'Advanced':
+      return '100%';
+    default:
+      return '0%';
+  }
+};
 
 export const About: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('skills');
@@ -171,7 +187,7 @@ export const About: React.FC = () => {
     <section
       ref={sectionRef}
       id="about"
-      className="relative py-24 md:py-32 text-white overflow-hidden font-sans border-t border-zinc-900/80"
+      className="relative py-12 md:py-16 text-white overflow-hidden font-sans border-t border-zinc-900/80"
       style={{ backgroundColor: '#020208' }}
     >
       {/* BACKGROUND EFFECTS */}
@@ -243,8 +259,8 @@ export const About: React.FC = () => {
 
       <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
         {/* HEADER */}
-        <div className="flex flex-col items-center text-center gap-4 mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
+        <div className="flex flex-col items-center text-center gap-4 mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs sm:text-sm font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
             <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] animate-pulse" />
             <span>Tentang Saya</span>
           </div>
@@ -273,27 +289,28 @@ export const About: React.FC = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl group-hover:bg-pink-500/20 transition-all duration-500 pointer-events-none" />
 
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-xl bg-zinc-900 border border-pink-500/30 flex items-center justify-center text-2xl font-bold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
+                <div className="w-16 h-16 rounded-xl bg-zinc-900 border border-pink-500/30 flex items-center justify-center text-2xl font-bold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)] shrink-0">
                   ZA
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">Zainab Aqilah</h3>
-                  <p className="text-xs text-zinc-400 font-medium">Data Analysis</p>
+                  <h3 className="text-xl font-bold text-white">Zainab Aqilah</h3>
+                  <p className="text-sm sm:text-base text-zinc-400 font-medium">Data Analysis</p>
                 </div>
               </div>
 
-              <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-6">
-                Fresh Graduate S1 Ilmu Komputer Universitas Lampung dengan ketertarikan pada bidang Analisis Data, Statistika, dan Machine Learning. Memiliki pengalaman PKL di Badan Pusat Statistik (BPS) dengan keterlibatan langsung dalam pengembangan website serta sebagai asisten dosen Statistika, Basis Data, dan Matematika. Terbiasa mengolah data, melakukan analisis, serta mampu bekerja dalam tim, mudah beradaptasi dan belajar dengan cepat.
+              {/* 🟢 Teks Deskripsi HP Dinaikkan dari text-xs ke text-sm */}
+              <p className="text-sm sm:text-base leading-relaxed text-zinc-300 font-normal mb-6">
+                Fresh Graduate S1 Ilmu Komputer Universitas Lampung dengan ketertarikan pada bidang Ilmu Data, Analisis Data, Statistika, dan Machine Learning. Memiliki pengalaman PKL di Badan Pusat Statistik (BPS) serta sebagai asisten dosen Statistika, Basis Data, dan Matematika. Terbiasa mengolah data, melakukan analisis, serta mampu bekerja dalam tim, mudah beradaptasi dan belajar dengan cepat.
               </p>
 
               <div className="grid grid-cols-1 gap-3 pt-4 border-t border-zinc-800/80">
                 {metricsData.map((metric, idx) => (
                   <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/60">
                     <div>
-                      <p className="text-xs text-zinc-500">{metric.label}</p>
-                      <p className="text-xs font-medium text-zinc-300">{metric.description}</p>
+                      <p className="text-xs sm:text-sm text-zinc-500">{metric.label}</p>
+                      <p className="text-xs sm:text-sm font-medium text-zinc-300">{metric.description}</p>
                     </div>
-                    <span className="text-sm font-bold text-pink-400">{metric.value}</span>
+                    <span className="text-sm sm:text-base font-bold text-pink-400">{metric.value}</span>
                   </div>
                 ))}
               </div>
@@ -305,7 +322,7 @@ export const About: React.FC = () => {
             <div className="flex items-center gap-2 p-1.5 bg-zinc-900/90 rounded-xl border border-zinc-800/80 mb-8 overflow-x-auto">
               <button
                 onClick={() => setActiveTab('skills')}
-                className={`flex-1 min-w-[100px] py-2 px-4 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                className={`flex-1 min-w-[110px] py-2.5 px-4 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
                   activeTab === 'skills'
                     ? 'bg-zinc-800 text-white border border-pink-500/30 shadow-sm'
                     : 'text-zinc-400 hover:text-white cursor-pointer'
@@ -315,7 +332,7 @@ export const About: React.FC = () => {
               </button>
               <button
                 onClick={() => setActiveTab('education')}
-                className={`flex-1 min-w-[100px] py-2 px-4 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                className={`flex-1 min-w-[110px] py-2.5 px-4 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
                   activeTab === 'education'
                     ? 'bg-zinc-800 text-white border border-pink-500/30 shadow-sm'
                     : 'text-zinc-400 hover:text-white cursor-pointer'
@@ -325,7 +342,7 @@ export const About: React.FC = () => {
               </button>
               <button
                 onClick={() => setActiveTab('certification')}
-                className={`flex-1 min-w-[100px] py-2 px-4 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                className={`flex-1 min-w-[110px] py-2.5 px-4 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
                   activeTab === 'certification'
                     ? 'bg-zinc-800 text-white border border-pink-500/30 shadow-sm'
                     : 'text-zinc-400 hover:text-white cursor-pointer'
@@ -337,23 +354,27 @@ export const About: React.FC = () => {
 
             {activeTab === 'skills' && (
               <div className="space-y-5 animate-fadeIn">
-                <h4 className="text-base font-bold text-white flex items-center gap-2 mb-2">
+                <h4 className="text-base sm:text-lg font-bold text-white flex items-center gap-2 mb-3">
                   <span className="text-pink-400">✦</span> Kemampuan & Teknologi
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {skillsData.map((skill, index) => (
-                    <div key={index} className="p-3.5 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+                    <div key={index} className="p-3.5 sm:p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-semibold text-zinc-200 flex items-center gap-2">
+                        {/* 🟢 Teks Nama Skill di HP dinaikkan ke text-sm */}
+                        <span className="text-sm sm:text-base font-semibold text-zinc-200 flex items-center gap-2">
                           <span>{skill.icon}</span>
                           {skill.name}
                         </span>
-                        <span className="text-[11px] font-mono text-pink-400">{skill.level}%</span>
+                        {/* 🟢 Level Skill di HP dinaikkan ke text-xs */}
+                        <span className="text-xs sm:text-sm font-mono text-pink-400 font-medium shrink-0 ml-2">
+                          {skill.level}
+                        </span>
                       </div>
-                      <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                      <div className="w-full h-1.5 sm:h-2 bg-zinc-800 rounded-full overflow-hidden">
                         <div
                           className="h-full bg-gradient-to-r from-pink-500 to-rose-400 rounded-full transition-all duration-500"
-                          style={{ width: `${skill.level}%` }}
+                          style={{ width: getLevelPercentage(skill.level) }}
                         />
                       </div>
                     </div>
@@ -364,15 +385,17 @@ export const About: React.FC = () => {
 
             {activeTab === 'education' && (
               <div className="space-y-6 animate-fadeIn">
-                <h4 className="text-base font-bold text-white flex items-center gap-2">
+                <h4 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                   <span className="text-pink-400">✦</span> Riwayat Akademis
                 </h4>
                 <div className="relative border-l border-zinc-800 pl-6 space-y-6">
                   <div className="relative">
                     <span className="absolute -left-[31px] top-1 w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
-                    <span className="text-[11px] font-mono text-pink-400">Fresh Graduate</span>
-                    <h5 className="text-sm font-bold text-white mt-1">S1 Ilmu Komputer</h5>
-                    <p className="text-xs text-zinc-400 mt-1">
+                    <span className="text-xs sm:text-sm font-mono text-pink-400 font-semibold">Fresh Graduate</span>
+                    {/* 🟢 Judul Jurusan dinaikkan di HP */}
+                    <h5 className="text-base sm:text-lg font-bold text-white mt-1">S1 Ilmu Komputer</h5>
+                    {/* 🟢 Deskripsi IPK dinaikkan di HP */}
+                    <p className="text-sm sm:text-base text-zinc-300 mt-1">
                       Universitas Lampung, IPK: 3.85.
                     </p>
                   </div>
@@ -382,39 +405,48 @@ export const About: React.FC = () => {
 
             {activeTab === 'certification' && (
               <div className="space-y-4 animate-fadeIn">
-                <h4 className="text-base font-bold text-white flex items-center gap-2 mb-4">
+                <h4 className="text-base sm:text-lg font-bold text-white flex items-center gap-2 mb-4">
                   <span className="text-pink-400">✦</span> Lisensi & Sertifikasi
                 </h4>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {certificationsData.map((cert) => (
                     <div
                       key={cert.id}
-                      className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 hover:border-pink-500/30 transition-all duration-300 flex flex-col justify-between gap-3 group"
+                      className="p-4 sm:p-5 rounded-xl bg-zinc-900/60 border border-zinc-800/80 hover:border-pink-500/30 transition-all duration-300 flex flex-col justify-between gap-4 group"
                     >
                       <div>
-                        <div className="flex items-center justify-between gap-2">
-                          <h5 className="text-xs font-bold text-white group-hover:text-pink-400 transition-colors">
+                        {/* Judul + Tahun */}
+                        <div className="flex items-start justify-between gap-3">
+                          {/* 🟢 Judul Sertifikat di HP dinaikkan ke text-base */}
+                          <h5 className="text-base sm:text-lg font-bold text-white group-hover:text-pink-400 transition-colors leading-snug">
                             {cert.title}
                           </h5>
-                          <span className="text-[10px] font-mono text-pink-400 px-2 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 shrink-0">
+                          <span className="text-xs sm:text-sm font-mono text-pink-400 px-2.5 py-0.5 rounded-md bg-zinc-900 border border-zinc-800 shrink-0 font-medium">
                             {cert.year}
                           </span>
                         </div>
-                        <p className="text-[11px] font-medium text-pink-400/90 mt-1">{cert.issuer}</p>
-                        <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
+
+                        {/* Penerbit / Issuer */}
+                        <p className="text-xs sm:text-sm font-bold text-pink-400/90 mt-1.5">
+                          {cert.issuer}
+                        </p>
+
+                        {/* 🟢 Deskripsi Sertifikat di HP dinaikkan ke text-sm */}
+                        <p className="text-sm sm:text-base text-zinc-300 mt-2.5 leading-relaxed">
                           {cert.description}
                         </p>
                       </div>
 
-                      <div className="pt-3 border-t border-zinc-800/60 flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-zinc-500 flex items-center gap-1.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-pink-500" />
+                      {/* Footer Sertifikat */}
+                      <div className="pt-3.5 border-t border-zinc-800/60 flex items-center justify-between">
+                        <span className="text-xs sm:text-sm font-mono text-zinc-400 flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-pink-500 shadow-[0_0_6px_#ec4899]" />
                           Terverifikasi
                         </span>
                         
                         <button
                           onClick={() => setSelectedCert(cert)}
-                          className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-pink-500/20 border border-zinc-800 hover:border-pink-500/50 text-xs font-semibold text-pink-400 hover:text-pink-300 transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
+                          className="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-pink-500/20 border border-zinc-800 hover:border-pink-500/50 text-xs sm:text-sm font-semibold text-pink-400 hover:text-pink-300 transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-sm active:scale-95"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -422,7 +454,7 @@ export const About: React.FC = () => {
                             viewBox="0 0 24 24"
                             strokeWidth={1.8}
                             stroke="currentColor"
-                            className="w-3.5 h-3.5"
+                            className="w-4 h-4"
                           >
                             <path
                               strokeLinecap="round"
@@ -447,26 +479,24 @@ export const About: React.FC = () => {
         </div>
       </div>
 
-      {/* 🚀 MODAL DILINDUNGI PORTAL & DENGAN TOUCH SCROLL LOCK */}
+      {/* 🚀 MODAL DILINDUNGI PORTAL */}
       {selectedCert &&
         createPortal(
           <div
-            /* class touch-none & overscroll-contain mengunci swipe touch gesture di background */
             className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn touch-none overscroll-contain"
             onClick={() => setSelectedCert(null)}
           >
             <div
-              /* class touch-auto mengizinkan internal scroll jika isi modal tinggi */
               className="relative w-full max-w-4xl max-h-[90vh] bg-zinc-950 border border-zinc-800 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(236,72,153,0.2)] flex flex-col my-auto touch-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Header */}
               <div className="p-4 sm:p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/90 shrink-0">
                 <div>
-                  <h3 className="text-sm sm:text-base font-bold text-white">
+                  <h3 className="text-base sm:text-lg font-bold text-white">
                     {selectedCert.title}
                   </h3>
-                  <p className="text-xs text-pink-400 font-medium mt-0.5">
+                  <p className="text-xs sm:text-sm text-pink-400 font-medium mt-0.5">
                     {selectedCert.issuer} — ({selectedCert.year})
                   </p>
                 </div>
@@ -489,14 +519,14 @@ export const About: React.FC = () => {
                     className="w-full h-[60vh] min-h-[350px] rounded-lg border border-zinc-800 bg-zinc-900"
                   >
                     <div className="flex flex-col items-center justify-center h-full p-6 text-center">
-                      <p className="text-xs text-zinc-300 mb-4">
+                      <p className="text-xs sm:text-sm text-zinc-300 mb-4">
                         Browser kamu tidak mendukung pratinjau langsung PDF secara tertanam.
                       </p>
                       <a
                         href={selectedCert.fileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-4 py-2 rounded-xl bg-pink-500/20 border border-pink-500/40 text-pink-400 text-xs font-semibold hover:bg-pink-500/30 transition-all"
+                        className="px-4 py-2 rounded-xl bg-pink-500/20 border border-pink-500/40 text-pink-400 text-xs sm:text-sm font-semibold hover:bg-pink-500/30 transition-all"
                       >
                         Buka PDF di Tab Baru ↗
                       </a>
@@ -520,17 +550,17 @@ export const About: React.FC = () => {
                   className="hidden flex-col items-center justify-center text-center p-8 border border-dashed border-zinc-800 rounded-xl bg-zinc-950/90 max-w-md absolute inset-auto z-10"
                 >
                   <span className="text-3xl mb-2">📂</span>
-                  <p className="text-xs font-semibold text-zinc-300">
+                  <p className="text-sm font-semibold text-zinc-300">
                     Berkas Sertifikat Tidak Ditemukan
                   </p>
-                  <p className="text-[11px] text-zinc-500 mt-2 leading-relaxed">
+                  <p className="text-xs text-zinc-500 mt-2 leading-relaxed">
                     Pastikan nama file di folder <code className="text-pink-400 font-mono">public/certificates/</code> adalah <code className="text-pink-400 font-mono">{selectedCert.fileUrl.replace('./certificates/', '')}</code>.
                   </p>
                 </div>
               </div>
 
               {/* Modal Footer */}
-              <div className="p-4 border-t border-zinc-800 flex items-center justify-between bg-zinc-900/90 text-xs shrink-0">
+              <div className="p-4 border-t border-zinc-800 flex items-center justify-between bg-zinc-900/90 text-xs sm:text-sm shrink-0">
                 <p className="text-zinc-500 hidden sm:block">
                   Zainab Aqilah — Sertifikat
                 </p>

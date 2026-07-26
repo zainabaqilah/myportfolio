@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { createPortal } from 'react-dom'; // 👈 Import createPortal
+import { createPortal } from 'react-dom';
 
 interface Project {
   id: number;
@@ -98,7 +98,7 @@ export const Projects: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const sectionRef = useRef<HTMLElement>(null);
 
-  // 🔒 Lock Scroll Total (Lock HTML & Body + Mencegah Touch Scroll Background)
+  // 🔒 Lock Scroll Total
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = 'hidden';
@@ -134,7 +134,7 @@ export const Projects: React.FC = () => {
     };
   }, []);
 
-  // Generate Data Bintang Maju (Cruising Space)
+  // Generate Data Bintang Maju
   const starsData = useMemo(() => {
     const COUNT = 80;
     return [...Array(COUNT)].map(() => {
@@ -171,7 +171,7 @@ export const Projects: React.FC = () => {
     });
   }, []);
 
-  const categories = ['All', 'Web App', 'Data & Research'];
+  const categories = ['All', 'Data & Research', 'Web App'];
 
   const filteredProjects =
     filter === 'All'
@@ -182,7 +182,7 @@ export const Projects: React.FC = () => {
     <section
       ref={sectionRef}
       id="projects"
-      className="relative py-24 md:py-32 text-white overflow-hidden font-sans border-t border-zinc-900/80"
+      className="relative py-12 md:py-16 text-white overflow-hidden font-sans border-t border-zinc-900/80"
       style={{ backgroundColor: '#020208' }}
     >
       {/* 🌌 LATAR KOSMIK & NEBULA */}
@@ -257,8 +257,8 @@ export const Projects: React.FC = () => {
       <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10">
         
         {/* SECTION HEADER */}
-        <div className="flex flex-col items-center text-center gap-4 mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
+        <div className="flex flex-col items-center text-center gap-4 mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-pink-500/30 text-xs sm:text-sm font-semibold text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.15)]">
             <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] animate-pulse" />
             <span>Karya & Eksplorasi</span>
           </div>
@@ -278,7 +278,8 @@ export const Projects: React.FC = () => {
             </h2>
           </div>
 
-          <p className="text-xs sm:text-sm text-zinc-400 max-w-lg mt-2">
+          {/* 🟢 Subtitle Header HP dinaikkan ke text-sm */}
+          <p className="text-sm sm:text-base text-zinc-400 max-w-lg mt-2">
             Kumpulan proyek pengembangan web dan penelitian berbasis data yang dikerjakan selama perkuliahan, magang, dan pengembangan mandiri.
           </p>
         </div>
@@ -289,7 +290,7 @@ export const Projects: React.FC = () => {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 border backdrop-blur-sm cursor-pointer ${
+              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 border backdrop-blur-sm cursor-pointer ${
                 filter === cat
                   ? 'bg-zinc-800 text-white border-pink-500/40 shadow-[0_0_15px_rgba(236,72,153,0.25)] scale-105'
                   : 'bg-zinc-950/80 text-zinc-400 border-zinc-800 hover:border-zinc-700 hover:text-white hover:scale-102'
@@ -305,17 +306,20 @@ export const Projects: React.FC = () => {
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="group relative bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/90 hover:border-pink-500/50 rounded-2xl p-7 transition-all duration-500 ease-out flex flex-col justify-between hover:-translate-y-2 hover:shadow-[0_15px_35px_-10px_rgba(236,72,153,0.2)] overflow-hidden"
+              className="group relative bg-zinc-950/80 backdrop-blur-sm border border-zinc-800/90 hover:border-pink-500/50 rounded-2xl p-6 sm:p-7 transition-all duration-500 ease-out flex flex-col justify-between hover:-translate-y-2 hover:shadow-[0_15px_35px_-10px_rgba(236,72,153,0.2)] overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-500/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
               <div className="absolute -top-12 -right-12 w-40 h-40 bg-gradient-to-br from-pink-500/10 via-purple-500/5 to-transparent rounded-full blur-2xl group-hover:scale-150 group-hover:opacity-100 opacity-50 transition-all duration-700 pointer-events-none" />
 
               <div className="relative z-10">
-                <div className="flex items-center justify-between gap-2 mb-4">
-                  <span className="text-[11px] font-mono text-pink-400 font-semibold uppercase tracking-wider group-hover:text-pink-300 transition-colors">
-                    {project.category}
-                  </span>
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/80 border border-zinc-800 text-[10px] font-mono text-zinc-400 group-hover:border-zinc-700 transition-colors">
+                {/* Header Kartu: Category Badge & Status */}
+                <div className="flex items-center justify-between gap-3 mb-5">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs sm:text-sm font-mono text-pink-400 font-medium">
+                    <span className="w-2 h-2 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899]" />
+                    <span>{project.category}</span>
+                  </div>
+
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/80 border border-zinc-800 text-xs sm:text-sm font-mono text-zinc-400 group-hover:border-zinc-700 transition-colors">
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${
                         project.status === 'Completed'
@@ -327,24 +331,31 @@ export const Projects: React.FC = () => {
                   </div>
                 </div>
 
-                <h3 className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-pink-300 transition-all duration-300 leading-snug">
-                  {project.title}
-                </h3>
-                <p className="text-xs font-medium text-zinc-400 mt-1 mb-4 group-hover:text-zinc-300 transition-colors">
-                  {project.subtitle}
-                </p>
+                {/* Judul Proyek & Subtitle */}
+                <div className="mb-4">
+                  {/* 🟢 Judul Proyek HP dinaikkan ke text-lg sm:text-xl */}
+                  <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-pink-400 transition-colors duration-200 leading-snug">
+                    {project.title}
+                  </h3>
+                  {/* 🟢 Subtitle Proyek HP dinaikkan ke text-sm sm:text-base */}
+                  <p className="text-sm sm:text-base font-semibold text-pink-400/90 mt-1.5">
+                    {project.subtitle}
+                  </p>
+                </div>
 
-                <p className="text-xs text-zinc-400 leading-relaxed line-clamp-3 mb-6 group-hover:text-zinc-300/90 transition-colors">
+                {/* 🟢 Deskripsi Singkat Kartu HP dinaikkan ke text-sm sm:text-base */}
+                <p className="text-sm sm:text-base text-zinc-300/90 leading-relaxed line-clamp-3 mb-6 group-hover:text-zinc-200 transition-colors">
                   {project.description}
                 </p>
               </div>
 
               <div className="relative z-10">
-                <div className="flex flex-wrap gap-1.5 mb-6 pt-4 border-t border-zinc-800/80 group-hover:border-pink-500/20 transition-colors">
+                <div className="flex flex-wrap gap-2 mb-6 pt-4 border-t border-zinc-800/80 group-hover:border-pink-500/20 transition-colors">
                   {project.technologies.map((tech, idx) => (
+                    /* 🟢 Badges Tech Stack HP dinaikkan ke text-xs sm:text-sm */
                     <span
                       key={idx}
-                      className="px-2.5 py-1 rounded-md bg-zinc-900/90 border border-zinc-800/80 text-[11px] font-medium text-zinc-300 group-hover:border-pink-500/30 group-hover:text-pink-200 transition-all duration-300"
+                      className="px-2.5 py-1 rounded-md bg-zinc-900/90 border border-zinc-800/80 text-xs sm:text-sm font-semibold text-zinc-300 group-hover:border-pink-500/30 group-hover:text-pink-200 transition-all duration-300"
                     >
                       {tech}
                     </span>
@@ -355,7 +366,7 @@ export const Projects: React.FC = () => {
                 <button
                   onClick={() => setSelectedProject(project)}
                   type="button"
-                  className="w-full py-2.5 px-4 rounded-xl bg-zinc-900 group-hover:bg-gradient-to-r group-hover:from-zinc-900 group-hover:to-zinc-800 border border-zinc-800 group-hover:border-pink-500/40 text-xs font-semibold text-zinc-200 group-hover:text-white transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-md group-hover:shadow-[0_0_15px_rgba(236,72,153,0.15)] cursor-pointer active:scale-98"
+                  className="w-full py-2.5 px-4 rounded-xl bg-zinc-900 group-hover:bg-gradient-to-r group-hover:from-zinc-900 group-hover:to-zinc-800 border border-zinc-800 group-hover:border-pink-500/40 text-xs sm:text-sm font-semibold text-zinc-200 group-hover:text-white transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-md group-hover:shadow-[0_0_15px_rgba(236,72,153,0.15)] cursor-pointer active:scale-98"
                 >
                   <span>Lihat Detail Proyek</span>
                   <span className="group-hover/btn:translate-x-1.5 transition-transform duration-300 text-pink-400">
@@ -405,32 +416,35 @@ export const Projects: React.FC = () => {
 
               {/* Header Modal */}
               <div className="mb-6 pr-12 relative z-10">
-                <span className="text-xs font-mono text-pink-400 font-semibold uppercase tracking-wider">
+                <span className="text-xs sm:text-sm font-mono text-pink-400 font-semibold uppercase tracking-wider">
                   {selectedProject.category} — {selectedProject.period}
                 </span>
-                <h3 className="text-2xl font-bold text-white mt-1">
+                {/* 🟢 Judul Modal HP dinaikkan ke text-xl sm:text-2xl */}
+                <h3 className="text-xl sm:text-2xl font-bold text-white mt-1 leading-snug">
                   {selectedProject.title}
                 </h3>
-                <p className="text-xs font-medium text-zinc-400 mt-1">
+                {/* 🟢 Subtitle Modal HP dinaikkan ke text-sm sm:text-base */}
+                <p className="text-sm sm:text-base font-semibold text-pink-400/90 mt-1.5">
                   {selectedProject.subtitle}
                 </p>
               </div>
 
-              {/* Deskripsi Lengkap */}
-              <div className="mb-6 space-y-3 text-xs sm:text-sm text-zinc-300 leading-relaxed relative z-10">
+              {/* 🟢 Deskripsi Lengkap Modal HP dinaikkan ke text-sm sm:text-base */}
+              <div className="mb-6 space-y-3 text-sm sm:text-base text-zinc-300 leading-relaxed relative z-10">
                 <p>{selectedProject.description}</p>
               </div>
 
               {/* Poin-Poin Utama / Highlights */}
               <div className="mb-6 relative z-10">
-                <h4 className="text-xs font-mono uppercase text-zinc-400 tracking-wider mb-3">
+                <h4 className="text-xs sm:text-sm font-mono uppercase text-zinc-400 tracking-wider mb-3 font-semibold">
                   Sorotan Utama & Fitur:
                 </h4>
                 <ul className="space-y-2">
                   {selectedProject.highlights.map((item, idx) => (
+                    /* 🟢 List Highlights HP dinaikkan ke text-sm sm:text-base */
                     <li
                       key={idx}
-                      className="flex items-start gap-2 text-xs text-zinc-300"
+                      className="flex items-start gap-2.5 text-sm sm:text-base text-zinc-300 leading-relaxed"
                     >
                       <span className="text-pink-400 mt-0.5">✦</span>
                       <span>{item}</span>
@@ -441,14 +455,14 @@ export const Projects: React.FC = () => {
 
               {/* Tech Stack List */}
               <div className="mb-8 relative z-10">
-                <h4 className="text-xs font-mono uppercase text-zinc-400 tracking-wider mb-3">
+                <h4 className="text-xs sm:text-sm font-mono uppercase text-zinc-400 tracking-wider mb-3 font-semibold">
                   Teknologi yang Digunakan:
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedProject.technologies.map((tech, idx) => (
                     <span
                       key={idx}
-                      className="px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-medium text-pink-300"
+                      className="px-3 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-xs sm:text-sm font-medium text-pink-300"
                     >
                       {tech}
                     </span>
@@ -463,7 +477,7 @@ export const Projects: React.FC = () => {
                     href={selectedProject.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-2.5 px-5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-pink-500/40 text-xs font-semibold text-white transition-all duration-200 flex items-center gap-2 cursor-pointer"
+                    className="py-2.5 px-5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-pink-500/40 text-xs sm:text-sm font-semibold text-white transition-all duration-200 flex items-center gap-2 cursor-pointer"
                   >
                     <span>Halaman Akses</span>
                     <span>↗</span>
@@ -474,7 +488,7 @@ export const Projects: React.FC = () => {
                     href={selectedProject.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-2.5 px-5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-xs font-semibold text-white shadow-md shadow-pink-500/20 hover:shadow-pink-500/40 transition-all duration-200 flex items-center gap-2 cursor-pointer"
+                    className="py-2.5 px-5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-xs sm:text-sm font-semibold text-white shadow-md shadow-pink-500/20 hover:shadow-pink-500/40 transition-all duration-200 flex items-center gap-2 cursor-pointer"
                   >
                     <span>Live Demo</span>
                     <span>↗</span>
@@ -485,14 +499,14 @@ export const Projects: React.FC = () => {
                 <button
                   onClick={() => setSelectedProject(null)}
                   type="button"
-                  className="ml-auto py-2.5 px-5 rounded-xl bg-zinc-900/80 border border-zinc-800 hover:border-pink-500/40 text-xs font-semibold text-zinc-300 hover:text-white transition-all duration-200 cursor-pointer active:scale-95"
+                  className="ml-auto py-2.5 px-5 rounded-xl bg-zinc-900/80 border border-zinc-800 hover:border-pink-500/40 text-xs sm:text-sm font-semibold text-zinc-300 hover:text-white transition-all duration-200 cursor-pointer active:scale-95"
                 >
                   Tutup
                 </button>
               </div>
             </div>
           </div>,
-          document.body // Rendernya dilempar ke root body
+          document.body
         )}
 
       {/* Keyframe Animations & Modal Styling */}
